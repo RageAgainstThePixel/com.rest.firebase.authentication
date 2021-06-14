@@ -1,7 +1,7 @@
-﻿// Copyright (c) ProjectAuthor. All rights reserved.
+// Copyright (c) Stephen Hodgson. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace ProjectName.Editor
+namespace Firebase.Auth.Editor
 {
     public class ExampleEditor : UnityEditor.Editor
     {
