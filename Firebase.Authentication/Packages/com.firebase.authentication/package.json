@@ -1,5 +1,5 @@
 {
-  "name": "com.stephenhodgson.firebase.authentication",
+  "name": "com.firebase.authentication",
   "displayName": "Firebase.Authentication",
   "description": "A simple package for authenticating with Firebase.",
   "keywords": [],
