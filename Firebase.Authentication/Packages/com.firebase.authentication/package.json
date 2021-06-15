@@ -1,0 +1,20 @@
+{
+  "name": "com.firebase.authentication",
+  "displayName": "Firebase.Authentication",
+  "description": "A simple package for authenticating with Firebase.",
+  "keywords": [],
+  "version": "1.0.0-preview.1",
+  "unity": "2019.4",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "repository": "https://github.com/StephenHodgson/com.firebase.authentication.git"
+  },
+  "author": {
+    "name": "Stephen Hodgson",
+    "url": "https://github.com/StephenHodgson"
+  },
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "2.0.1-preview.1"
+  }
+}
