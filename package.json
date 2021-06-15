@@ -7,9 +7,13 @@
   "unity": "2019.4",
   "license": "MIT",
   "repository": {
-    "type": "git"
+    "type": "git",
+    "repository": "https://github.com/StephenHodgson/com.firebase.authentication.git"
   },
-  "author": "Stephen Hodgson",
+  "author": {
+    "name": "Stephen Hodgson",
+    "url": "https://github.com/StephenHodgson"
+  },
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "2.0.1-preview.1"
   }
