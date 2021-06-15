@@ -16,16 +16,16 @@ namespace Firebase.Authentication.Providers
 
         public override FirebaseProviderType ProviderType => FirebaseProviderType.EmailAndPassword;
 
-        internal override void Initialize(FirebaseConfiguration newConfig)
+        internal override void Initialize(FirebaseConfiguration configuration)
         {
-            base.Initialize(newConfig);
+            base.Initialize(configuration);
 
-            signupNewUser = new SignupNewUser(configuration);
-            setAccountInfo = new SetAccountInfo(configuration);
-            getAccountInfo = new GetAccountInfo(configuration);
-            verifyPassword = new VerifyPassword(configuration);
-            resetPassword = new ResetPassword(configuration);
-            linkAccount = new SetAccountLink(newConfig);
+            signupNewUser = new SignupNewUser(Configuration);
+            setAccountInfo = new SetAccountInfo(Configuration);
+            getAccountInfo = new GetAccountInfo(Configuration);
+            verifyPassword = new VerifyPassword(Configuration);
+            resetPassword = new ResetPassword(Configuration);
+            linkAccount = new SetAccountLink(configuration);
         }
 
         private static AuthCredential GetCredential(string email, string password)
@@ -80,12 +80,12 @@ namespace Firebase.Authentication.Providers
                     IsAnonymous = false
                 };
 
-                return new FirebaseUser(configuration, setUser, credential);
+                return new FirebaseUser(Configuration, setUser, credential);
             }
 
             var getUser = await GetUserInfoAsync(signupResponse.IdToken).ConfigureAwait(false);
 
-            return new FirebaseUser(configuration, getUser, credential);
+            return new FirebaseUser(Configuration, getUser, credential);
         }
 
         protected internal override async Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential)
@@ -108,7 +108,7 @@ namespace Firebase.Authentication.Providers
                 ProviderType = FirebaseProviderType.EmailAndPassword
             };
 
-            return new FirebaseUser(configuration, user, fc);
+            return new FirebaseUser(Configuration, user, fc);
         }
 
         protected internal override async Task<FirebaseUser> LinkWithCredentialAsync(string token, AuthCredential credential)
@@ -155,7 +155,7 @@ namespace Firebase.Authentication.Providers
                 RefreshToken = link.RefreshToken
             };
 
-            return new FirebaseUser(configuration, info, fc);
+            return new FirebaseUser(Configuration, info, fc);
         }
 
         private async Task<UserInfo> GetUserInfoAsync(string idToken)

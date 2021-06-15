@@ -12,11 +12,10 @@ namespace Firebase.Authentication
     /// <summary>
     /// Configuration of firebase authentication.
     /// </summary>
-    public class FirebaseConfiguration
+    internal class FirebaseConfiguration
     {
-        public FirebaseConfiguration(string apiKey, string authDomain, FirebaseAuthProvider[] authProviders, string userCacheFolder = null)
+        public FirebaseConfiguration(string apiKey, string authDomain, FirebaseAuthProvider[] authProviders = null, string userCacheFolder = null)
         {
-
             if (string.IsNullOrWhiteSpace(apiKey))
             {
                 throw new ArgumentException($"no {nameof(apiKey)} provided.");
@@ -29,7 +28,16 @@ namespace Firebase.Authentication
 
             if (authProviders == null || authProviders.Length == 0)
             {
-                throw new ArgumentException($"no {nameof(authProviders)} provided.");
+                authProviders = new FirebaseAuthProvider[]
+                {
+                    new EmailProvider(),
+                    new AppleProvider(),
+                    new FacebookProvider(),
+                    new GithubProvider(),
+                    new GoogleProvider(),
+                    new MicrosoftProvider(),
+                    new TwitterProvider(),
+                };
             }
 
             ApiKey = apiKey;

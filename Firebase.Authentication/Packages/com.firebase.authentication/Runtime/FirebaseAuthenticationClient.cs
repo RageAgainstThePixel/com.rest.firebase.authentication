@@ -19,13 +19,9 @@ namespace Firebase.Authentication
 
         private bool domainChecked;
 
-        public FirebaseAuthenticationClient(FirebaseConfiguration configuration)
+        public FirebaseAuthenticationClient(string apiKey, string authDomain, FirebaseAuthProvider[] providers = null, string userCacheDirectory = null)
         {
-            if (configuration == null)
-            {
-                throw new ArgumentException($"A valid {nameof(FirebaseConfiguration)} must be provided.");
-            }
-
+            configuration = new FirebaseConfiguration(apiKey, authDomain, providers, userCacheDirectory);
             projectConfig = new ProjectConfig(configuration);
             signupNewUser = new SignupNewUser(configuration);
             createAuthUri = new CreateAuthUri(configuration);
@@ -35,8 +31,7 @@ namespace Firebase.Authentication
                 provider.Initialize(configuration);
             }
 
-            this.configuration = configuration;
-            this.configuration.UserManager.UserChanged += TriggerAuthStateChanged;
+            configuration.UserManager.UserChanged += TriggerAuthStateChanged;
         }
 
         ~FirebaseAuthenticationClient()

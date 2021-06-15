@@ -29,10 +29,10 @@ namespace Firebase.Authentication.Providers
             return new OAuthCredential(accessToken, tokenType, providerType);
         }
 
-        internal override void Initialize(FirebaseConfiguration newConfig)
+        internal override void Initialize(FirebaseConfiguration configuration)
         {
-            base.Initialize(newConfig);
-            verifyAssertion = new VerifyAssertion(newConfig);
+            base.Initialize(configuration);
+            verifyAssertion = new VerifyAssertion(configuration);
         }
 
         internal virtual AuthCredential GetCredential(VerifyAssertionResponse response)
@@ -52,13 +52,13 @@ namespace Firebase.Authentication.Providers
 
             var response = await SendAuthRequest(new CreateAuthUriRequest
             {
-                ContinueUri = configuration.RedirectUri,
+                ContinueUri = Configuration.RedirectUri,
                 ProviderId = ProviderType,
                 CustomParameters = parameters,
                 OauthScope = scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null
             }).ConfigureAwait(false);
 
-            return new OAuthContinuation(configuration, response.AuthUri, response.SessionId, ProviderType);
+            return new OAuthContinuation(Configuration, response.AuthUri, response.SessionId, ProviderType);
         }
 
         protected internal override async Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential)
@@ -66,7 +66,7 @@ namespace Firebase.Authentication.Providers
             var authCredential = (OAuthCredential)credential;
             var (user, response) = await verifyAssertion.ExecuteAndParseAsync(credential.ProviderType, new VerifyAssertionRequest
             {
-                RequestUri = $"https://{configuration.AuthDomain}",
+                RequestUri = $"https://{Configuration.AuthDomain}",
                 PostBody = authCredential.GetPostBodyValue(credential.ProviderType),
                 PendingToken = authCredential.GetPendingTokenValue(),
                 ReturnIdpCredential = true,
@@ -85,7 +85,7 @@ namespace Firebase.Authentication.Providers
             var (user, response) = await verifyAssertion.ExecuteAndParseAsync(credential.ProviderType, new VerifyAssertionRequest
             {
                 IdToken = idToken,
-                RequestUri = $"https://{configuration.AuthDomain}",
+                RequestUri = $"https://{Configuration.AuthDomain}",
                 PostBody = authCredential.GetPostBodyValue(authCredential.ProviderType),
                 PendingToken = authCredential.GetPendingTokenValue(),
                 ReturnIdpCredential = true,
