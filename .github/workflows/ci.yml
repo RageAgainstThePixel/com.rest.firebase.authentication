@@ -19,6 +19,7 @@ concurrency:
 
 jobs:
   release:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,7 +28,9 @@ jobs:
         uses: cycjimmy/semantic-release-action@v2
         with:
           semantic_version: 16
-          dry_run: ${{ github.ref == 'refs/heads/development' }}
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
           branch: main
           branches: |
             [
@@ -42,5 +45,6 @@ jobs:
                 prerelease: ${{ github.event_name == 'pull_request' }}
               }
             ]
+          dry_run: ${{ github.ref == 'refs/heads/development' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
