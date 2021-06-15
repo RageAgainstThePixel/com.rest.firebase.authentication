@@ -28,19 +28,19 @@ jobs:
         uses: cycjimmy/semantic-release-action@v2
         with:
           dry_run: ${{ github.ref == 'refs/heads/development' }}
-        branch: main
-        branches: |
-          [
-            'main',
-            {
-              name: 'preview',
-              prerelease: ${{ github.event_name == 'pull_request' }}
-            }
-            'development',
-            {
-              name: 'preview',
-              prerelease: ${{ github.event_name == 'pull_request' }}
-            }
-          ]
+          branch: main
+          branches: |
+            [
+              'main',
+              {
+                name: 'preview',
+                prerelease: ${{ github.event_name == 'pull_request' }}
+              }
+              'development',
+              {
+                name: 'preview',
+                prerelease: ${{ github.event_name == 'pull_request' }}
+              }
+            ]
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
