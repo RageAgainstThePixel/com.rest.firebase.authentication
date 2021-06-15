@@ -1,3 +1,3 @@
-# Firebase.Auth
+# Firebase.Authentication
 
-The Firebase.Auth package.
+The Firebase.Authentication package.
