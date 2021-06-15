@@ -10,7 +10,7 @@ A [Firebase](https://firebase.google.com/) Authentication package for the Unity 
 - Add the OpenUPM package registry
 - Add the OpenUPM scope: `com.openupm`
 - Add the Firebase scope: `com.firebase`
-![scoped-registries](Firebase.Authentication/Packages/com.firebase.authentication/~Documentation/images/package-manager-scopes.png)
+![scoped-registries](Firebase.Authentication/Packages/com.firebase.authentication/Documentation~/images/package-manager-scopes.png)
 - Open the Unity Package Manager window
 - Change the Registry from Unity to `My Registries`
 - Add the `Firebase.Authentication` package
