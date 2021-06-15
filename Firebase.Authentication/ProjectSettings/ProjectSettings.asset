@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Stephen Hodgson
-  productName: Firebase.Auth
+  productName: Firebase.Authentication
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -124,7 +124,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0
+  bundleVersion: 1.0.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -168,9 +168,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.StephenHodgson.Firebase.Auth
-    Lumin: com.StephenHodgson.Firebase.Auth
-    Standalone: com.StephenHodgson.Firebase.Auth
+    Android: com.firebase.authentication
+    Lumin: com.firebase.authentication
+    Standalone: com.firebase.authentication
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 19
@@ -565,14 +565,14 @@ PlayerSettings:
     Windows Store Apps: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: com.StephenHodgson.Firebase.Auth
-  metroPackageVersion: 0.1.0.0
+  metroPackageName: com.firebase.authentication
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: com.StephenHodgson.Firebase.Auth
+  metroApplicationDescription: Firebase Authentication
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
