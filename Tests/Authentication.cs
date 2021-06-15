@@ -5,13 +5,13 @@ using NUnit.Framework;
 
 namespace Firebase.Authentication.Tests
 {
-    internal class ExampleTestScript
+    internal class Authentication
     {
         [Test]
-        public void ExampleTestScriptSimplePasses()
+        public void Test_1()
         {
-            // A Test behaves as an ordinary method
-            // Use the Assert class to test conditions
+            var firebaseClient = new FirebaseAuthenticationClient("apiKey", "hello.firebase.com");
+            Assert.NotNull(firebaseClient);
         }
     }
 }

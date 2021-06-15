@@ -9,14 +9,14 @@ namespace Firebase.Authentication.Providers
     public abstract class FirebaseAuthProvider
     {
         private CreateAuthUri createAuthUri;
-        protected FirebaseConfiguration configuration;
+        internal FirebaseConfiguration Configuration;
 
         public abstract FirebaseProviderType ProviderType { get; }
 
-        internal virtual void Initialize(FirebaseConfiguration newConfig)
+        internal virtual void Initialize(FirebaseConfiguration configuration)
         {
-            configuration = newConfig;
-            createAuthUri = new CreateAuthUri(newConfig);
+            Configuration = configuration;
+            createAuthUri = new CreateAuthUri(configuration);
         }
 
         protected internal abstract Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential);
