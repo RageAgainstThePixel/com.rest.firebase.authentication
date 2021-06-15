@@ -34,15 +34,11 @@ jobs:
           branch: main
           branches: |
             [
-              'main',
-              {
-                name: 'preview',
-                prerelease: ${{ github.event_name == 'pull_request' }}
-              }
+              'main'
               'development',
               {
                 name: 'preview',
-                prerelease: ${{ github.event_name == 'pull_request' }}
+                prerelease: true
               }
             ]
           dry_run: ${{ github.ref == 'refs/heads/development' }}
