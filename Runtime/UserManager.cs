@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Firebase.Authentication.Repository;
 
 namespace Firebase.Authentication
@@ -21,38 +20,40 @@ namespace Firebase.Authentication
             userRepository = fileSystem;
         }
 
-        public async Task<FirebaseUser> GetUserAsync()
+        public FirebaseUser GetUser
         {
-            if (cache != null)
+            get
             {
-                return cache;
-            }
+                if (cache != null)
+                {
+                    return cache;
+                }
 
-            if (!await userRepository.UserExistsAsync().ConfigureAwait(false))
-            {
-                return null;
-            }
+                if (!userRepository.UserExists)
+                {
+                    return null;
+                }
 
-            return cache = await userRepository.ReadUserAsync().ConfigureAwait(false);
+                return cache = userRepository.GetUser;
+            }
         }
 
-        public async Task SaveNewUserAsync(FirebaseUser user)
+        public void SaveNewUser(FirebaseUser user)
         {
             cache = user;
-
-            await userRepository.SaveUserAsync(user).ConfigureAwait(false);
-
+            userRepository.SaveUser(user);
             UserChanged?.Invoke(user);
         }
 
-        public Task UpdateExistingUserAsync(FirebaseUser user)
+        public void UpdateExistingUser(FirebaseUser user)
         {
-            return user.Uid != cache?.Info.Uid
-                ? Task.CompletedTask
-                : SaveNewUserAsync(user);
+            if (user.Uid != cache?.Info.Uid)
+            {
+                SaveNewUser(user);
+            }
         }
 
-        public async Task DeleteExistingUserAsync(string uid)
+        public void DeleteExistingUser(string uid)
         {
             if (cache?.Info.Uid != uid)
             {
@@ -62,7 +63,7 @@ namespace Firebase.Authentication
 
             cache = null;
 
-            await userRepository.DeleteUserAsync().ConfigureAwait(false);
+            userRepository.DeleteUser();
 
             UserChanged?.Invoke(null);
         }

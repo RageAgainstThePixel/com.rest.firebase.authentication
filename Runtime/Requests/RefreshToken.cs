@@ -8,7 +8,7 @@ namespace Firebase.Authentication.Requests
     /// </summary>
     internal class RefreshToken : FirebaseRequestBase<RefreshTokenRequest, RefreshTokenResponse>
     {
-        public RefreshToken(FirebaseConfiguration config) : base(config)
+        public RefreshToken(FirebaseConfiguration configuraton) : base(configuraton)
         {
             JsonSettingsOverride = new JsonSerializerSettings
             {

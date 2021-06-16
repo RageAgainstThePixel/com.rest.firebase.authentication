@@ -1,9 +1,12 @@
-﻿using Firebase.Authentication.Providers;
+﻿// Copyright (c) Stephen Hodgson. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Firebase.Authentication.Exceptions;
+using Firebase.Authentication.Providers;
 using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Firebase.Authentication.Exceptions;
 
 namespace Firebase.Authentication
 {
@@ -19,9 +22,9 @@ namespace Firebase.Authentication
 
         private bool domainChecked;
 
-        public FirebaseAuthenticationClient(string apiKey, string authDomain, FirebaseAuthProvider[] providers = null, string userCacheDirectory = null)
+        public FirebaseAuthenticationClient(FirebaseAuthentication authentication = null, FirebaseAuthProvider[] providers = null, string userCacheDirectory = null)
         {
-            configuration = new FirebaseConfiguration(apiKey, authDomain, providers, userCacheDirectory);
+            configuration = new FirebaseConfiguration(authentication, providers, userCacheDirectory);
             projectConfig = new ProjectConfig(configuration);
             signupNewUser = new SignupNewUser(configuration);
             createAuthUri = new CreateAuthUri(configuration);
@@ -56,12 +59,7 @@ namespace Firebase.Authentication
                 StateChanged += value;
 
                 // for every new listener trigger the AuthenticatedStateChanged event
-                configuration.UserManager.GetUserAsync().ContinueWith(task =>
-                {
-                    TriggerAuthStateChanged(task.Result == null
-                        ? null
-                        : new FirebaseUser(configuration, task.Result.Info, task.Result.Credential));
-                });
+                TriggerAuthStateChanged(configuration.UserManager.GetUser);
             }
             remove => StateChanged -= value;
         }
@@ -90,7 +88,7 @@ namespace Firebase.Authentication
 
             var user = await continuation.ContinueSignInAsync(redirectUri).ConfigureAwait(false);
 
-            await SaveTokenAsync(user).ConfigureAwait(false);
+            SaveToken(user);
 
             return user;
         }
@@ -109,7 +107,7 @@ namespace Firebase.Authentication
                 .GetAuthProvider(credential.ProviderType)
                 .SignInWithCredentialAsync(credential);
 
-            await SaveTokenAsync(user).ConfigureAwait(false);
+            SaveToken(user);
             return user;
         }
 
@@ -138,7 +136,7 @@ namespace Firebase.Authentication
             };
 
             var user = new FirebaseUser(configuration, info, credential);
-            await SaveTokenAsync(user);
+            SaveToken(user);
             return user;
         }
 
@@ -170,7 +168,7 @@ namespace Firebase.Authentication
             var provider = (EmailProvider)configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignInUserAsync(email, password).ConfigureAwait(false);
 
-            await SaveTokenAsync(result).ConfigureAwait(false);
+            SaveToken(result);
 
             return result;
         }
@@ -185,7 +183,7 @@ namespace Firebase.Authentication
             var provider = (EmailProvider)configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignUpUserAsync(email, password, displayName).ConfigureAwait(false);
 
-            await SaveTokenAsync(result).ConfigureAwait(false);
+            SaveToken(result);
 
             return result;
         }
@@ -204,11 +202,11 @@ namespace Firebase.Authentication
         /// <summary>
         /// Signs current user out.
         /// </summary>
-        public Task SignOutAsync()
+        public void SignOut()
         {
             var uid = User?.Uid;
             User = null;
-            return configuration.UserManager.DeleteExistingUserAsync(uid);
+            configuration.UserManager.DeleteExistingUser(uid);
         }
 
         private void TriggerAuthStateChanged(FirebaseUser user)
@@ -217,8 +215,8 @@ namespace Firebase.Authentication
             StateChanged?.Invoke(user);
         }
 
-        private async Task SaveTokenAsync(FirebaseUser user)
-            => await configuration.UserManager.SaveNewUserAsync(user);
+        private void SaveToken(FirebaseUser user)
+            => configuration.UserManager.SaveNewUser(user);
 
         private async Task CheckAuthDomain()
         {

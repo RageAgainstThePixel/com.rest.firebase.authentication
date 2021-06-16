@@ -1,4 +1,5 @@
-﻿using Firebase.Authentication.Requests;
+﻿using System.Collections.Generic;
+using Firebase.Authentication.Requests;
 
 namespace Firebase.Authentication.Providers
 {
@@ -6,8 +7,7 @@ namespace Firebase.Authentication.Providers
     {
         public override FirebaseProviderType ProviderType => FirebaseProviderType.Twitter;
 
-        /// <inheritdoc />
-        protected override string[] DefaultScopes => null;
+        protected override List<string> defaultScopes => new List<string>();
 
         protected override string LocaleParameterName => "lang";
 

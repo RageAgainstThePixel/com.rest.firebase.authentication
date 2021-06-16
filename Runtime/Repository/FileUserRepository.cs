@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.IO;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Firebase.Authentication.Repository
@@ -13,49 +12,48 @@ namespace Firebase.Authentication.Repository
     internal class FileUserRepository : IUserRepository
     {
         private readonly string filename;
-        private readonly FirebaseConfiguration config;
         private readonly JsonSerializerSettings options;
+        private readonly FirebaseConfiguration configuration;
 
         /// <summary>
         /// Creates new instance of <see cref="FileUserRepository"/>.
         /// </summary>
-        /// <param name="config"><see cref="FirebaseConfiguration"/></param>
-        /// <param name="folder"> Name of the subfolder to be created / accessed under <see cref="Application.persistentDataPath"/>. </param>
-        public FileUserRepository(FirebaseConfiguration config, string folder)
+        /// <param name="configuration"><see cref="FirebaseConfiguration"/></param>
+        /// <param name="cacheDirectory"> Name of the subfolder to be created / accessed under <see cref="Application.persistentDataPath"/>.</param>
+        public FileUserRepository(FirebaseConfiguration configuration, string cacheDirectory)
         {
-            this.config = config;
+            this.configuration = configuration;
             var data = Application.persistentDataPath;
-            filename = Path.Combine(data, folder, "firebase.json");
+            filename = Path.Combine(data, cacheDirectory, "firebase.json");
             options = new JsonSerializerSettings();
             options.Converters.Add(new StringEnumConverter());
 
-            Directory.CreateDirectory(Path.Combine(data, folder));
+            Directory.CreateDirectory(Path.Combine(data, cacheDirectory));
         }
 
-        public virtual Task<FirebaseUser> ReadUserAsync()
+        public FirebaseUser GetUser
         {
-            var content = File.ReadAllText(filename);
-            var obj = JsonConvert.DeserializeObject<StoredUser>(content, options);
-            return Task.FromResult(new FirebaseUser(config, obj.UserInfo, obj.Credential));
+            get
+            {
+                var content = File.ReadAllText(filename);
+                var obj = JsonConvert.DeserializeObject<StoredUser>(content, options);
+                return new FirebaseUser(configuration, obj.UserInfo, obj.Credential);
+            }
         }
 
-        public virtual Task SaveUserAsync(FirebaseUser newUser)
+        public void SaveUser(FirebaseUser newUser)
         {
             var content = JsonConvert.SerializeObject(new StoredUser(newUser.Info, newUser.Credential), options);
             File.WriteAllText(filename, content);
-            return Task.CompletedTask;
         }
 
-        public virtual Task DeleteUserAsync()
+        public void DeleteUser()
         {
             File.Delete(filename);
-            return Task.CompletedTask;
         }
 
-        public Task<bool> UserExistsAsync()
-        {
-            return Task.FromResult(File.Exists(filename));
-        }
+        public bool UserExists
+            => File.Exists(filename);
 
         private class StoredUser
         {

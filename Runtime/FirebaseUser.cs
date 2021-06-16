@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Firebase.Authentication.Providers;
+using Firebase.Authentication.Requests;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Firebase.Authentication.Providers;
-using Firebase.Authentication.Requests;
 
 namespace Firebase.Authentication
 {
@@ -18,18 +18,18 @@ namespace Firebase.Authentication
         private readonly UpdateAccount updateAccount;
         private readonly SetAccountUnlink unlinkAccount;
         private readonly SetAccountInfo setAccountInfo;
-        private readonly FirebaseConfiguration config;
+        private readonly FirebaseConfiguration configuration;
 
-        internal FirebaseUser(FirebaseConfiguration config, UserInfo userInfo, FirebaseCredential credential)
+        internal FirebaseUser(FirebaseConfiguration configuration, UserInfo userInfo, FirebaseCredential credential)
         {
-            this.config = config;
+            this.configuration = configuration;
             Info = userInfo;
             Credential = credential;
-            deleteAccount = new DeleteAccount(config);
-            token = new RefreshToken(config);
-            updateAccount = new UpdateAccount(config);
-            unlinkAccount = new SetAccountUnlink(config);
-            setAccountInfo = new SetAccountInfo(config);
+            deleteAccount = new DeleteAccount(configuration);
+            token = new RefreshToken(configuration);
+            updateAccount = new UpdateAccount(configuration);
+            unlinkAccount = new SetAccountUnlink(configuration);
+            setAccountInfo = new SetAccountInfo(configuration);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Firebase.Authentication
                     RefreshToken = refresh.RefreshToken
                 };
 
-                await config.UserManager.UpdateExistingUserAsync(this).ConfigureAwait(false);
+                configuration.UserManager.UpdateExistingUser(this);
             }
 
             return Credential.IdToken;
@@ -99,7 +99,7 @@ namespace Firebase.Authentication
                 RefreshToken = result.RefreshToken
             };
 
-            await config.UserManager.UpdateExistingUserAsync(this).ConfigureAwait(false);
+            configuration.UserManager.UpdateExistingUser(this);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Firebase.Authentication
 
             Info.DisplayName = result.DisplayName;
 
-            await config.UserManager.UpdateExistingUserAsync(this).ConfigureAwait(false);
+            configuration.UserManager.UpdateExistingUser(this);
         }
 
         /// <summary>
@@ -127,11 +127,11 @@ namespace Firebase.Authentication
         /// <param name="credential"> Provider specific credentials. </param>
         public async Task<FirebaseUser> LinkWithCredentialAsync(AuthCredential credential)
         {
-            var provider = config.AuthProviders.FirstOrDefault(p => p.ProviderType == credential.ProviderType);
+            var provider = configuration.AuthProviders.FirstOrDefault(p => p.ProviderType == credential.ProviderType);
 
             if (provider == null)
             {
-                throw new InvalidOperationException($"Provider {credential.ProviderType} is not configured");
+                throw new InvalidOperationException($"Provider {credential.ProviderType} is not configured.");
             }
 
             var idToken = await GetIdTokenAsync().ConfigureAwait(false);
@@ -140,14 +140,14 @@ namespace Firebase.Authentication
             Credential = result.Credential;
             Info = result.Info;
 
-            await config.UserManager.UpdateExistingUserAsync(result).ConfigureAwait(false);
+            configuration.UserManager.UpdateExistingUser(result);
 
             return result;
         }
 
         public async Task<FirebaseUser> LinkWithRedirectAsync(FirebaseProviderType providerType, SignInRedirectDelegate redirectDelegate)
         {
-            var provider = config.AuthProviders.FirstOrDefault(p => p.ProviderType == providerType);
+            var provider = configuration.AuthProviders.FirstOrDefault(p => p.ProviderType == providerType);
 
             if (!(provider is OAuthProvider oauthProvider))
             {
@@ -168,7 +168,7 @@ namespace Firebase.Authentication
             Credential = result.Credential;
             Info = result.Info;
 
-            await config.UserManager.UpdateExistingUserAsync(result).ConfigureAwait(false);
+            configuration.UserManager.UpdateExistingUser(result);
 
             return result;
         }
@@ -192,7 +192,7 @@ namespace Firebase.Authentication
         }
 
         /// <summary>
-        /// Delete user account.
+        /// Sign the user out and delete their account.
         /// </summary>
         public async Task DeleteAsync()
         {
@@ -201,7 +201,7 @@ namespace Firebase.Authentication
                 IdToken = await GetIdTokenAsync().ConfigureAwait(false)
             };
             await deleteAccount.ExecuteAsync(tokenRequest).ConfigureAwait(false);
-            await config.UserManager.DeleteExistingUserAsync(Uid).ConfigureAwait(false);
+            configuration.UserManager.DeleteExistingUser(Uid);
         }
     }
 }

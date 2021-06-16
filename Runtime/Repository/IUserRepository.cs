@@ -1,18 +1,16 @@
-﻿using System.Threading.Tasks;
-
-namespace Firebase.Authentication.Repository
+﻿namespace Firebase.Authentication.Repository
 {
     /// <summary>
     /// Repository abstraction for <see cref="FirebaseUser"/>.
     /// </summary>
     internal interface IUserRepository
     {
-        Task<bool> UserExistsAsync();
+        bool UserExists { get; }
 
-        Task<FirebaseUser> ReadUserAsync();
+        FirebaseUser GetUser { get; }
 
-        Task SaveUserAsync(FirebaseUser newUser);
+        void SaveUser(FirebaseUser newUser);
 
-        Task DeleteUserAsync();
+        void DeleteUser();
     }
 }

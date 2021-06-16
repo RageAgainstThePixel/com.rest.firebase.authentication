@@ -1,13 +1,16 @@
-﻿namespace Firebase.Authentication.Providers
+﻿using System.Collections.Generic;
+
+namespace Firebase.Authentication.Providers
 {
     public class MicrosoftProvider : OAuthProvider
     {
         public static AuthCredential GetCredential(string accessToken)
             => GetCredential(FirebaseProviderType.Microsoft, accessToken, OAuthCredentialTokenType.AccessToken);
 
+        /// <inheritdoc />
         public override FirebaseProviderType ProviderType => FirebaseProviderType.Microsoft;
 
-        protected override string[] DefaultScopes { get; } =
+        protected override List<string> defaultScopes { get; } = new List<string>
         {
             "profile",
             "email",

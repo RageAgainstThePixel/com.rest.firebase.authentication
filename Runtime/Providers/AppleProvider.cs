@@ -1,12 +1,15 @@
-﻿namespace Firebase.Authentication.Providers
+﻿using System.Collections.Generic;
+
+namespace Firebase.Authentication.Providers
 {
     public class AppleProvider : OAuthProvider
     {
-        public static AuthCredential GetCredential(string accessToken) => GetCredential(FirebaseProviderType.Apple, accessToken, OAuthCredentialTokenType.AccessToken);
+        public static AuthCredential GetCredential(string accessToken)
+            => GetCredential(FirebaseProviderType.Apple, accessToken, OAuthCredentialTokenType.AccessToken);
 
         public override FirebaseProviderType ProviderType => FirebaseProviderType.Apple;
 
-        protected override string[] DefaultScopes { get; } =
+        protected override List<string> defaultScopes { get; } = new List<string>
         {
             "email"
         };

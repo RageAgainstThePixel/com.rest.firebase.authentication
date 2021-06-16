@@ -5,8 +5,8 @@
     /// </summary>
     internal class SetAccountLink : FirebaseRequestBase<SetAccountLinkRequest, SetAccountLinkResponse>
     {
-        public SetAccountLink(FirebaseConfiguration config)
-            : base(config)
+        public SetAccountLink(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

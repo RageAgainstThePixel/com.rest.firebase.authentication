@@ -7,8 +7,8 @@ namespace Firebase.Authentication.Requests
     /// </summary>
     internal class ProjectConfig : FirebaseRequestBase<object, ProjectConfigResponse>
     {
-        public ProjectConfig(FirebaseConfiguration config)
-            : base(config)
+        public ProjectConfig(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

@@ -5,8 +5,8 @@
     /// </summary>
     internal class VerifyPassword : FirebaseRequestBase<VerifyPasswordRequest, VerifyPasswordResponse>
     {
-        public VerifyPassword(FirebaseConfiguration config)
-            : base(config)
+        public VerifyPassword(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 
