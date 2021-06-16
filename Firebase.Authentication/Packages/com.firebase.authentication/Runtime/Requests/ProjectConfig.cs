@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Net.Http;
 
 namespace Firebase.Authentication.Requests
 {
@@ -7,8 +9,8 @@ namespace Firebase.Authentication.Requests
     /// </summary>
     internal class ProjectConfig : FirebaseRequestBase<object, ProjectConfigResponse>
     {
-        public ProjectConfig(FirebaseConfiguration configuraton)
-            : base(configuraton)
+        public ProjectConfig(FirebaseConfiguration configuration)
+            : base(configuration)
         {
         }
 

@@ -1,5 +1,4 @@
-﻿// Copyright (c) Stephen Hodgson. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Firebase.Authentication.Providers;
 using Firebase.Authentication.Repository;
@@ -54,6 +53,8 @@ namespace Firebase.Authentication
         }
 
         private readonly FirebaseAuthentication authentication;
+
+        public string ProjectId => authentication.ProjectId;
 
         public string ApiKey => authentication.ApiKey;
 

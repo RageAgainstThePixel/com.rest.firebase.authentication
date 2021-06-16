@@ -1,4 +1,6 @@
-﻿using Firebase.Authentication.Requests;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Firebase.Authentication.Requests;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
