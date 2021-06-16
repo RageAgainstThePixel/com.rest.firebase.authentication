@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Firebase.Authentication.Requests
@@ -8,7 +10,8 @@ namespace Firebase.Authentication.Requests
     /// </summary>
     internal class RefreshToken : FirebaseRequestBase<RefreshTokenRequest, RefreshTokenResponse>
     {
-        public RefreshToken(FirebaseConfiguration config) : base(config)
+        public RefreshToken(FirebaseConfiguration configuration)
+            : base(configuration)
         {
             JsonSettingsOverride = new JsonSerializerSettings
             {

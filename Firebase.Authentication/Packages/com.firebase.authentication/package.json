@@ -16,5 +16,8 @@
   },
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "2.0.1-preview.1"
+  },
+  "publishConfig": {
+    "registry": "https://package.openupm.com"
   }
 }

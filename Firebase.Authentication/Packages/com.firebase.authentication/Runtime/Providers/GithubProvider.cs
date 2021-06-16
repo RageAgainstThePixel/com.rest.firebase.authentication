@@ -1,4 +1,8 @@
-﻿namespace Firebase.Authentication.Providers
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Collections.Generic;
+
+namespace Firebase.Authentication.Providers
 {
     public class GithubProvider : OAuthProvider
     {
@@ -8,6 +12,6 @@
         public override FirebaseProviderType ProviderType => FirebaseProviderType.Github;
 
         /// <inheritdoc />
-        protected override string[] DefaultScopes => null;
+        protected override List<string> defaultScopes { get; } = new List<string>();
     }
 }

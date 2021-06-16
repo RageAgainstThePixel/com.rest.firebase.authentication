@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Firebase.Authentication.Exceptions;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Firebase.Authentication.Exceptions;
 
 namespace Firebase.Authentication.Requests
 {
@@ -14,9 +16,9 @@ namespace Firebase.Authentication.Requests
     /// <typeparam name="TResponse"> Specifies the type of response payload. </typeparam>
     internal abstract class FirebaseRequestBase<TRequest, TResponse>
     {
-        protected readonly FirebaseConfiguration config;
+        protected readonly FirebaseConfiguration Configuration;
 
-        protected FirebaseRequestBase(FirebaseConfiguration config) => this.config = config;
+        protected FirebaseRequestBase(FirebaseConfiguration configuration) => Configuration = configuration;
 
         protected abstract string UrlFormat { get; }
 
@@ -24,11 +26,11 @@ namespace Firebase.Authentication.Requests
 
         protected virtual JsonSerializerSettings JsonSettingsOverride => null;
 
-        public virtual async Task<TResponse> ExecuteAsync(TRequest request)
+        public async Task<TResponse> ExecuteAsync(TRequest request)
         {
             var responseData = string.Empty;
-            var requestData = request != null ? JsonConvert.SerializeObject(request, JsonSettingsOverride ?? config.JsonSettings) : null;
-            var url = GetFormattedUrl(config.ApiKey);
+            var requestData = request != null ? JsonConvert.SerializeObject(request, JsonSettingsOverride ?? Configuration.JsonSettings) : null;
+            var url = GetFormattedUrl(Configuration.ApiKey);
 
             try
             {
@@ -38,10 +40,10 @@ namespace Firebase.Authentication.Requests
                     Content = content
                 };
 
-                var httpResponse = await config.HttpClient.SendAsync(message).ConfigureAwait(false);
+                var httpResponse = await Configuration.HttpClient.SendAsync(message).ConfigureAwait(false);
                 responseData = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                var response = JsonConvert.DeserializeObject<TResponse>(responseData, JsonSettingsOverride ?? config.JsonSettings);
+                var response = JsonConvert.DeserializeObject<TResponse>(responseData, JsonSettingsOverride ?? Configuration.JsonSettings);
 
                 httpResponse.EnsureSuccessStatusCode();
 

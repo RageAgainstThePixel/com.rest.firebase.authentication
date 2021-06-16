@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using Firebase.Authentication.Exceptions;
+using System.Threading.Tasks;
 
 namespace Firebase.Authentication.Requests
 {
@@ -8,8 +10,8 @@ namespace Firebase.Authentication.Requests
     /// </summary>
     internal class VerifyAssertion : FirebaseRequestBase<VerifyAssertionRequest, VerifyAssertionResponse>
     {
-        public VerifyAssertion(FirebaseConfiguration config)
-            : base(config)
+        public VerifyAssertion(FirebaseConfiguration configuration)
+            : base(configuration)
         {
         }
 
@@ -57,7 +59,7 @@ namespace Firebase.Authentication.Requests
                 ProviderType = providerType
             };
 
-            return (new FirebaseUser(config, userInfo, token), assertion);
+            return (new FirebaseUser(Configuration, userInfo, token), assertion);
         }
 
         protected override string UrlFormat => Endpoints.GoogleIdentityUrl;

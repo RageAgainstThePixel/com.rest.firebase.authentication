@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 namespace Firebase.Authentication.Repository
 {
@@ -7,12 +7,12 @@ namespace Firebase.Authentication.Repository
     /// </summary>
     internal interface IUserRepository
     {
-        Task<bool> UserExistsAsync();
+        bool UserExists { get; }
 
-        Task<FirebaseUser> ReadUserAsync();
+        FirebaseUser GetUser { get; }
 
-        Task SaveUserAsync(FirebaseUser newUser);
+        void SaveUser(FirebaseUser newUser);
 
-        Task DeleteUserAsync();
+        void DeleteUser();
     }
 }

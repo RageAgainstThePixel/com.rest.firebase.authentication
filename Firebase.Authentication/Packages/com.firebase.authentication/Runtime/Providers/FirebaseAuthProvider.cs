@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System.Threading.Tasks;
 using Firebase.Authentication.Requests;
 
 namespace Firebase.Authentication.Providers
@@ -11,6 +13,9 @@ namespace Firebase.Authentication.Providers
         private CreateAuthUri createAuthUri;
         internal FirebaseConfiguration Configuration;
 
+        /// <summary>
+        /// The <see cref="FirebaseProviderType"/> for this provider instance.
+        /// </summary>
         public abstract FirebaseProviderType ProviderType { get; }
 
         internal virtual void Initialize(FirebaseConfiguration configuration)

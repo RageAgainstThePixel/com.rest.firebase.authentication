@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Firebase.Authentication
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-    using System.Runtime.Serialization;
-
     internal static class EnumExtensions
     {
         private static readonly Dictionary<string, string> EnumCache = new Dictionary<string, string>();

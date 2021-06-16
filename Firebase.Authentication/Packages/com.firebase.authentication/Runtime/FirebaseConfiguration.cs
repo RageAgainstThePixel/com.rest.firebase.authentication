@@ -1,4 +1,6 @@
-﻿using Firebase.Authentication.Providers;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Firebase.Authentication.Providers;
 using Firebase.Authentication.Repository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -9,22 +11,11 @@ using System.Net.Http;
 
 namespace Firebase.Authentication
 {
-    /// <summary>
-    /// Configuration of firebase authentication.
-    /// </summary>
     internal class FirebaseConfiguration
     {
-        public FirebaseConfiguration(string apiKey, string authDomain, FirebaseAuthProvider[] authProviders = null, string userCacheFolder = null)
+        public FirebaseConfiguration(FirebaseAuthentication authentication = null, FirebaseAuthProvider[] authProviders = null, string userCacheDirectory = null)
         {
-            if (string.IsNullOrWhiteSpace(apiKey))
-            {
-                throw new ArgumentException($"no {nameof(apiKey)} provided.");
-            }
-
-            if (string.IsNullOrWhiteSpace(authDomain))
-            {
-                throw new ArgumentException($"no {nameof(authDomain)} provided.");
-            }
+            this.authentication = authentication ?? FirebaseAuthentication.Default;
 
             if (authProviders == null || authProviders.Length == 0)
             {
@@ -40,8 +31,6 @@ namespace Firebase.Authentication
                 };
             }
 
-            ApiKey = apiKey;
-            AuthDomain = authDomain;
             AuthProviders = authProviders;
             HttpClient = new HttpClient();
             JsonSettings = new JsonSerializerSettings
@@ -57,30 +46,22 @@ namespace Firebase.Authentication
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 });
-            UserManager = new UserManager(string.IsNullOrWhiteSpace(userCacheFolder)
+            UserManager = new UserManager(string.IsNullOrWhiteSpace(userCacheDirectory)
                 ? (IUserRepository)new InMemoryRepository()
-                : (IUserRepository)new FileUserRepository(this, userCacheFolder));
+                : (IUserRepository)new FileUserRepository(this, userCacheDirectory));
             RedirectUri = $"https://{AuthDomain}/__/auth/handler";
         }
 
-        /// <summary>
-        /// The api key of your Firebase app.
-        /// </summary>
-        public string ApiKey { get; }
+        private readonly FirebaseAuthentication authentication;
 
-        /// <summary>
-        /// Collection of auth providers (e.g. Google, Facebook etc.)
-        /// </summary>
+        public string ProjectId => authentication.ProjectId;
+
+        public string ApiKey => authentication.ApiKey;
+
+        public string AuthDomain => authentication.AuthDomain;
+
         public FirebaseAuthProvider[] AuthProviders { get; }
 
-        /// <summary>
-        /// Auth domain of your firebase app, e.g. hello.firebaseapp.com
-        /// </summary>
-        public string AuthDomain { get; }
-
-        /// <summary>
-        /// Specifies the uri that oauth provider will navigate to to finish auth.
-        /// </summary>
         internal string RedirectUri { get; }
 
         internal JsonSerializerSettings JsonSettings { get; }
@@ -89,13 +70,8 @@ namespace Firebase.Authentication
 
         internal UserManager UserManager { get; }
 
-        /// <summary>
-        /// Get provider instance for given <paramref name="providerType"/>.
-        /// </summary>
         internal FirebaseAuthProvider GetAuthProvider(FirebaseProviderType providerType)
-        {
-            return AuthProviders.FirstOrDefault(authProvider => authProvider.ProviderType == providerType)
-                ?? throw new InvalidOperationException($"{nameof(FirebaseProviderType)}.{providerType} is not configured, you need to add it to your {nameof(FirebaseConfiguration)}");
-        }
+            => AuthProviders.FirstOrDefault(authProvider => authProvider.ProviderType == providerType) ??
+               throw new InvalidOperationException($"{nameof(FirebaseProviderType)}.{providerType} is not configured.");
     }
 }

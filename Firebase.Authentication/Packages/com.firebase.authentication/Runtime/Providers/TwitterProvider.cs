@@ -1,4 +1,7 @@
-﻿using Firebase.Authentication.Requests;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Firebase.Authentication.Requests;
+using System.Collections.Generic;
 
 namespace Firebase.Authentication.Providers
 {
@@ -6,8 +9,7 @@ namespace Firebase.Authentication.Providers
     {
         public override FirebaseProviderType ProviderType => FirebaseProviderType.Twitter;
 
-        /// <inheritdoc />
-        protected override string[] DefaultScopes => null;
+        protected override List<string> defaultScopes => new List<string>();
 
         protected override string LocaleParameterName => "lang";
 
