@@ -1,5 +1,4 @@
-﻿// Copyright (c) Stephen Hodgson. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Firebase.Authentication.Exceptions;
 using Firebase.Authentication.Providers;
@@ -11,11 +10,11 @@ using System.Threading.Tasks;
 namespace Firebase.Authentication
 {
     /// <summary>
-    /// Firebase client which encapsulates communication with Firebase servers.
+    /// A Firebase client which encapsulates authenticated communication with Firebase servers.
     /// </summary>
     public class FirebaseAuthenticationClient
     {
-        private readonly FirebaseConfiguration configuration;
+        internal readonly FirebaseConfiguration Configuration;
         private readonly ProjectConfig projectConfig;
         private readonly SignupNewUser signupNewUser;
         private readonly CreateAuthUri createAuthUri;
@@ -24,28 +23,41 @@ namespace Firebase.Authentication
 
         public FirebaseAuthenticationClient(FirebaseAuthentication authentication = null, FirebaseAuthProvider[] providers = null, string userCacheDirectory = null)
         {
-            configuration = new FirebaseConfiguration(authentication, providers, userCacheDirectory);
-            projectConfig = new ProjectConfig(configuration);
-            signupNewUser = new SignupNewUser(configuration);
-            createAuthUri = new CreateAuthUri(configuration);
+            Configuration = new FirebaseConfiguration(authentication, providers, userCacheDirectory);
+            projectConfig = new ProjectConfig(Configuration);
+            signupNewUser = new SignupNewUser(Configuration);
+            createAuthUri = new CreateAuthUri(Configuration);
 
-            foreach (var provider in configuration.AuthProviders)
+            foreach (var provider in Configuration.AuthProviders)
             {
-                provider.Initialize(configuration);
+                provider.Initialize(Configuration);
             }
 
-            configuration.UserManager.UserChanged += TriggerAuthStateChanged;
+            Configuration.UserManager.UserChanged += TriggerAuthStateChanged;
         }
 
         ~FirebaseAuthenticationClient()
         {
-            configuration.UserManager.UserChanged -= TriggerAuthStateChanged;
+            Configuration.UserManager.UserChanged -= TriggerAuthStateChanged;
         }
+
+        private FirebaseUser loggedInUser;
 
         /// <summary>
         /// Currently signed in user.
         /// </summary>
-        public FirebaseUser User { get; private set; }
+        public FirebaseUser User
+        {
+            get
+            {
+                if (loggedInUser == null)
+                {
+                    throw new FirebaseAuthException("No user currently logged in", AuthErrorReason.UserNotFound);
+                }
+                return loggedInUser;
+            }
+            private set => loggedInUser = value;
+        }
 
         private event Action<FirebaseUser> StateChanged;
 
@@ -59,7 +71,7 @@ namespace Firebase.Authentication
                 StateChanged += value;
 
                 // for every new listener trigger the AuthenticatedStateChanged event
-                TriggerAuthStateChanged(configuration.UserManager.GetUser);
+                TriggerAuthStateChanged(Configuration.UserManager.GetUser);
             }
             remove => StateChanged -= value;
         }
@@ -103,7 +115,7 @@ namespace Firebase.Authentication
         {
             await CheckAuthDomain().ConfigureAwait(false);
 
-            var user = await configuration
+            var user = await Configuration
                 .GetAuthProvider(credential.ProviderType)
                 .SignInWithCredentialAsync(credential);
 
@@ -135,7 +147,7 @@ namespace Firebase.Authentication
                 IsAnonymous = true
             };
 
-            var user = new FirebaseUser(configuration, info, credential);
+            var user = new FirebaseUser(Configuration, info, credential);
             SaveToken(user);
             return user;
         }
@@ -149,7 +161,7 @@ namespace Firebase.Authentication
 
             var request = new CreateAuthUriRequest
             {
-                ContinueUri = configuration.RedirectUri,
+                ContinueUri = Configuration.RedirectUri,
                 Identifier = email
             };
 
@@ -165,7 +177,7 @@ namespace Firebase.Authentication
         {
             await CheckAuthDomain().ConfigureAwait(false);
 
-            var provider = (EmailProvider)configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
+            var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignInUserAsync(email, password).ConfigureAwait(false);
 
             SaveToken(result);
@@ -180,7 +192,7 @@ namespace Firebase.Authentication
         {
             await CheckAuthDomain().ConfigureAwait(false);
 
-            var provider = (EmailProvider)configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
+            var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignUpUserAsync(email, password, displayName).ConfigureAwait(false);
 
             SaveToken(result);
@@ -195,7 +207,7 @@ namespace Firebase.Authentication
         {
             await CheckAuthDomain().ConfigureAwait(false);
 
-            var provider = (EmailProvider)configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
+            var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             await provider.ResetEmailPasswordAsync(email).ConfigureAwait(false);
         }
 
@@ -206,17 +218,17 @@ namespace Firebase.Authentication
         {
             var uid = User?.Uid;
             User = null;
-            configuration.UserManager.DeleteExistingUser(uid);
+            Configuration.UserManager.DeleteExistingUser(uid);
         }
 
-        private void TriggerAuthStateChanged(FirebaseUser user)
+        private void TriggerAuthStateChanged(FirebaseUser newUser)
         {
-            User = user;
-            StateChanged?.Invoke(user);
+            User = newUser;
+            StateChanged?.Invoke(newUser);
         }
 
-        private void SaveToken(FirebaseUser user)
-            => configuration.UserManager.SaveNewUser(user);
+        private void SaveToken(FirebaseUser newUser)
+            => Configuration.UserManager.SaveNewUser(newUser);
 
         private async Task CheckAuthDomain()
         {
@@ -227,7 +239,7 @@ namespace Firebase.Authentication
 
             var result = await projectConfig.ExecuteAsync(null).ConfigureAwait(false);
 
-            if (!result.AuthorizedDomains.Contains(configuration.AuthDomain))
+            if (!result.AuthorizedDomains.Contains(Configuration.AuthDomain))
             {
                 throw new InvalidOperationException("Auth domain is not among the authorized ones");
             }

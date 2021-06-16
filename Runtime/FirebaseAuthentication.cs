@@ -1,5 +1,4 @@
-﻿// Copyright (c) Stephen Hodgson. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Newtonsoft.Json;
 using System;
@@ -12,8 +11,13 @@ namespace Firebase.Authentication
 {
     public class FirebaseAuthentication
     {
-        public FirebaseAuthentication(string apiKey, string authDomain)
+        public FirebaseAuthentication(string projectId, string apiKey, string authDomain)
         {
+            if (string.IsNullOrWhiteSpace(projectId))
+            {
+                throw new ArgumentException($"no {nameof(projectId)} provided.");
+            }
+
             if (string.IsNullOrWhiteSpace(apiKey))
             {
                 throw new ArgumentException($"no {nameof(apiKey)} provided.");
@@ -24,6 +28,7 @@ namespace Firebase.Authentication
                 throw new ArgumentException($"no {nameof(authDomain)} provided.");
             }
 
+            ProjectId = projectId;
             ApiKey = apiKey;
             AuthDomain = authDomain;
         }
@@ -49,14 +54,16 @@ namespace Firebase.Authentication
             set => cachedDefault = value;
         }
 
+        public string ProjectId { get; }
+
         public string ApiKey { get; }
 
         public string AuthDomain { get; }
 
         private static FirebaseAuthentication LoadFromAsset()
             => (from asset in Object.FindObjectsOfType<FirebaseConfigurationSettings>()
-                where !string.IsNullOrWhiteSpace(asset.ApiKey) && !string.IsNullOrWhiteSpace(asset.AuthDomain)
-                select new FirebaseAuthentication(asset.ApiKey, asset.AuthDomain)).FirstOrDefault();
+                where !string.IsNullOrWhiteSpace(asset.ApiKey) && !string.IsNullOrWhiteSpace(asset.AuthDomain) && !string.IsNullOrWhiteSpace(asset.ProjectId)
+                select new FirebaseAuthentication(asset.ProjectId, asset.ApiKey, asset.AuthDomain)).FirstOrDefault();
 
         private static FirebaseAuthentication LoadFromEnv()
         {
@@ -74,6 +81,7 @@ namespace Firebase.Authentication
         {
             directory = directory ?? Environment.CurrentDirectory;
 
+            string projectId = null;
             string key = null;
             string authDomain = null;
             var currentDirectory = new DirectoryInfo(directory);
@@ -85,7 +93,8 @@ namespace Firebase.Authentication
                     var path = Path.Combine(currentDirectory.FullName, filename);
                     var json = File.ReadAllText(path);
                     var googleServices = JsonConvert.DeserializeObject<GoogleServices>(json);
-                    authDomain = $"{googleServices.ProjectInfo.ProjectId}.firebaseapp.com";
+                    projectId = googleServices.ProjectInfo.ProjectId;
+                    authDomain = $"{projectId}.firebaseapp.com";
                     key = googleServices.Client.FirstOrDefault()?.ApiKey.FirstOrDefault()?.CurrentKey;
                 }
 
@@ -100,7 +109,7 @@ namespace Firebase.Authentication
             }
 
             return !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(authDomain)
-                ? new FirebaseAuthentication(key, authDomain)
+                ? new FirebaseAuthentication(projectId, key, authDomain)
                 : null;
         }
 

@@ -1,4 +1,6 @@
-﻿using Firebase.Authentication.Exceptions;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Firebase.Authentication.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;

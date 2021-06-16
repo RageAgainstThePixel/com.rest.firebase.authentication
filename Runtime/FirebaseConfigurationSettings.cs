@@ -1,5 +1,4 @@
-﻿// Copyright (c) Stephen Hodgson. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
 
@@ -8,6 +7,11 @@ namespace Firebase.Authentication
     [CreateAssetMenu(fileName = nameof(FirebaseConfigurationSettings), menuName = "Firebase/" + nameof(FirebaseConfigurationSettings))]
     internal class FirebaseConfigurationSettings : ScriptableObject
     {
+        [SerializeField]
+        private string projectId;
+
+        public string ProjectId => projectId;
+
         [SerializeField]
         [Tooltip("The api key of your Firebase app.")]
         private string apiKey;

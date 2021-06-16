@@ -1,9 +1,11 @@
-﻿namespace Firebase.Authentication.Requests
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+namespace Firebase.Authentication.Requests
 {
     internal class UpdateAccount : FirebaseRequestBase<UpdateAccountRequest, UpdateAccountResponse>
     {
-        public UpdateAccount(FirebaseConfiguration configuraton)
-            : base(configuraton)
+        public UpdateAccount(FirebaseConfiguration configuration)
+            : base(configuration)
         {
         }
 

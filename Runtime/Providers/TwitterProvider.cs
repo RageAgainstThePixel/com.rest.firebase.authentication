@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 using Firebase.Authentication.Requests;
+using System.Collections.Generic;
 
 namespace Firebase.Authentication.Providers
 {
