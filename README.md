@@ -5,7 +5,6 @@ for the Unity Engine.
 
 Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-authentication-dotnet)
 
-
 [![openupm](https://img.shields.io/npm/v/com.firebase.authentication?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.firebase.authentication/)
 
 ## Installing
