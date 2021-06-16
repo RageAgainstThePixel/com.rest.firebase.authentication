@@ -5,7 +5,7 @@
     /// </summary>
     internal class DeleteAccount : FirebaseRequestBase<IdTokenRequest, object>
     {
-        public DeleteAccount(FirebaseConfiguration config) : base(config)
+        public DeleteAccount(FirebaseConfiguration configuraton) : base(configuraton)
         {
         }
 

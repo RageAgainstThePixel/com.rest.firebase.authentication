@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Firebase.Authentication.Exceptions;
+﻿using Firebase.Authentication.Exceptions;
 using Firebase.Authentication.Requests;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Firebase.Authentication.Providers
 {
@@ -31,7 +31,7 @@ namespace Firebase.Authentication.Providers
         private static AuthCredential GetCredential(string email, string password)
             => new EmailCredential(email, password);
 
-        public Task ResetEmailPasswordAsync(string email)
+        internal Task ResetEmailPasswordAsync(string email)
         {
             var request = new ResetPasswordRequest
             {
@@ -41,10 +41,10 @@ namespace Firebase.Authentication.Providers
             return resetPassword.ExecuteAsync(request);
         }
 
-        public Task<FirebaseUser> SignInUserAsync(string email, string password)
+        internal Task<FirebaseUser> SignInUserAsync(string email, string password)
             => SignInWithCredentialAsync(GetCredential(email, password));
 
-        public async Task<FirebaseUser> SignUpUserAsync(string email, string password, string displayName)
+        internal async Task<FirebaseUser> SignUpUserAsync(string email, string password, string displayName)
         {
             var signupResponse = await signupNewUser.ExecuteAsync(new SignupNewUserRequest
             {

@@ -5,8 +5,8 @@
     /// </summary>
     internal class ResetPassword : FirebaseRequestBase<ResetPasswordRequest, ResetPasswordResponse>
     {
-        public ResetPassword(FirebaseConfiguration config)
-            : base(config)
+        public ResetPassword(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

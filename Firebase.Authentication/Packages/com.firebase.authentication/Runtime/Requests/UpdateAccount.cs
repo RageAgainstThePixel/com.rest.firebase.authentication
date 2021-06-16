@@ -2,8 +2,8 @@
 {
     internal class UpdateAccount : FirebaseRequestBase<UpdateAccountRequest, UpdateAccountResponse>
     {
-        public UpdateAccount(FirebaseConfiguration config)
-            : base(config)
+        public UpdateAccount(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

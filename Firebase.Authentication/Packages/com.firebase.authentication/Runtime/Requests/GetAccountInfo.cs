@@ -5,8 +5,8 @@
     /// </summary>
     internal class GetAccountInfo : FirebaseRequestBase<IdTokenRequest, GetAccountInfoResponse>
     {
-        public GetAccountInfo(FirebaseConfiguration config)
-            : base(config)
+        public GetAccountInfo(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

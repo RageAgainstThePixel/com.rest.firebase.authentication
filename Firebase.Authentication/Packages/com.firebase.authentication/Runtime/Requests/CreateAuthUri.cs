@@ -5,8 +5,8 @@
     /// </summary>
     internal class CreateAuthUri : FirebaseRequestBase<CreateAuthUriRequest, CreateAuthUriResponse>
     {
-        public CreateAuthUri(FirebaseConfiguration config)
-            : base(config)
+        public CreateAuthUri(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

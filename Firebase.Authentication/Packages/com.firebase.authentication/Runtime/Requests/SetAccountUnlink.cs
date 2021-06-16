@@ -5,8 +5,8 @@
     /// </summary>
     internal class SetAccountUnlink : FirebaseRequestBase<SetAccountUnlinkRequest, SetAccountInfoResponse>
     {
-        public SetAccountUnlink(FirebaseConfiguration config)
-            : base(config)
+        public SetAccountUnlink(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

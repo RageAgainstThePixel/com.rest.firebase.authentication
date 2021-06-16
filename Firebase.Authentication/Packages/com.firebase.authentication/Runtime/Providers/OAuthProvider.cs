@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Firebase.Authentication.Requests;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using Firebase.Authentication.Requests;
 
 namespace Firebase.Authentication.Providers
 {
@@ -14,52 +14,24 @@ namespace Firebase.Authentication.Providers
         private readonly List<string> scopes;
         private readonly Dictionary<string, string> parameters;
 
-        protected abstract string[] DefaultScopes { get; }
+        protected abstract List<string> defaultScopes { get; }
 
-        protected OAuthProvider(List<string> defaultScopes = null)
+        public IReadOnlyList<string> DefaultScopes => defaultScopes;
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="OAuthProvider"/>
+        /// </summary>
+        /// <param name="scopes">Additional scopes to grant other than the <see cref="DefaultScopes"/> provided.</param>
+        public OAuthProvider(List<string> scopes = null)
         {
-            scopes = defaultScopes ?? new List<string>();
+            this.scopes = scopes ?? new List<string>();
             parameters = new Dictionary<string, string>();
         }
 
         protected virtual string LocaleParameterName => null;
 
         protected static AuthCredential GetCredential(FirebaseProviderType providerType, string accessToken, OAuthCredentialTokenType tokenType)
-        {
-            return new OAuthCredential(accessToken, tokenType, providerType);
-        }
-
-        internal override void Initialize(FirebaseConfiguration configuration)
-        {
-            base.Initialize(configuration);
-            verifyAssertion = new VerifyAssertion(configuration);
-        }
-
-        internal virtual AuthCredential GetCredential(VerifyAssertionResponse response)
-        {
-            return GetCredential(
-                ProviderType,
-                response.PendingToken ?? response.OauthAccessToken,
-                response.PendingToken == null ? OAuthCredentialTokenType.AccessToken : OAuthCredentialTokenType.PendingToken);
-        }
-
-        internal virtual async Task<OAuthContinuation> SignInAsync()
-        {
-            if (LocaleParameterName != null && !parameters.ContainsKey(LocaleParameterName))
-            {
-                parameters[LocaleParameterName] = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            }
-
-            var response = await SendAuthRequest(new CreateAuthUriRequest
-            {
-                ContinueUri = Configuration.RedirectUri,
-                ProviderId = ProviderType,
-                CustomParameters = parameters,
-                OauthScope = scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null
-            }).ConfigureAwait(false);
-
-            return new OAuthContinuation(Configuration, response.AuthUri, response.SessionId, ProviderType);
-        }
+            => new OAuthCredential(accessToken, tokenType, providerType);
 
         protected internal override async Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential)
         {
@@ -99,11 +71,56 @@ namespace Firebase.Authentication.Providers
             return user;
         }
 
+        internal override void Initialize(FirebaseConfiguration configuration)
+        {
+            base.Initialize(configuration);
+            verifyAssertion = new VerifyAssertion(configuration);
+
+            foreach (var scope in defaultScopes)
+            {
+                if (!scopes.Contains(scope))
+                {
+                    scopes.Add(scope);
+                }
+            }
+        }
+
+        internal virtual AuthCredential GetCredential(VerifyAssertionResponse response)
+        {
+            return GetCredential(
+                ProviderType,
+                response.PendingToken ?? response.OauthAccessToken,
+                response.PendingToken == null ? OAuthCredentialTokenType.AccessToken : OAuthCredentialTokenType.PendingToken);
+        }
+
+        internal async Task<OAuthContinuation> SignInAsync()
+        {
+            if (LocaleParameterName != null && !parameters.ContainsKey(LocaleParameterName))
+            {
+                parameters[LocaleParameterName] = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            }
+
+            var response = await SendAuthRequest(new CreateAuthUriRequest
+            {
+                ContinueUri = Configuration.RedirectUri,
+                ProviderId = ProviderType,
+                CustomParameters = parameters,
+                OauthScope = scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null
+            }).ConfigureAwait(false);
+
+            return new OAuthContinuation(Configuration, response.AuthUri, response.SessionId, ProviderType);
+        }
+
         protected class OAuthCredential : AuthCredential
         {
             public OAuthCredential(string accessToken, OAuthCredentialTokenType tokenType, FirebaseProviderType providerType)
                 : base(providerType)
             {
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    throw new InvalidOperationException($"{nameof(accessToken)} is invalid");
+                }
+
                 Token = accessToken;
                 TokenType = tokenType;
             }

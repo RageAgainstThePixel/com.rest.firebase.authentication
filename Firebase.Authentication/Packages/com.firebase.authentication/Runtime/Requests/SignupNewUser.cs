@@ -5,8 +5,8 @@
     /// </summary>
     internal class SignupNewUser : FirebaseRequestBase<SignupNewUserRequest, SignupNewUserResponse>
     {
-        public SignupNewUser(FirebaseConfiguration config)
-            : base(config)
+        public SignupNewUser(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 

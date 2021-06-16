@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Firebase.Authentication.Requests;
+using System;
 using System.Threading.Tasks;
-using Firebase.Authentication.Requests;
 
 namespace Firebase.Authentication.Providers
 {
@@ -31,8 +31,8 @@ namespace Firebase.Authentication.Providers
         /// <summary>
         /// Finishes OAuth sign in after user signs in in browser.
         /// </summary>
-        /// <param name="redirectUri"> Final uri that user lands on after completing sign in in browser. </param>
-        /// <param name="idToken"> Optional id token  of an existing Firebase user. If set, it will effectivelly perform account linking. </param>
+        /// <param name="redirectUri"> Final uri that user lands on after completing sign in in browser.</param>
+        /// <param name="idToken"> Optional id token  of an existing Firebase user. If set, it will effectively perform account linking.</param>
         /// <returns></returns>
         public async Task<FirebaseUser> ContinueSignInAsync(string redirectUri, string idToken = null)
         {
@@ -46,12 +46,10 @@ namespace Firebase.Authentication.Providers
                     ReturnIdpCredential = true,
                     ReturnSecureToken = true
                 }).ConfigureAwait(false);
-
-            var provider = config.GetAuthProvider(providerType) as OAuthProvider ?? throw new InvalidOperationException($"{providerType} is not a OAuthProvider");
+            var provider = config.GetAuthProvider(providerType) as OAuthProvider ??
+                           throw new InvalidOperationException($"{providerType} is not a OAuthProvider");
             var credential = provider.GetCredential(response);
-
             response.Validate(credential);
-
             return user;
         }
     }

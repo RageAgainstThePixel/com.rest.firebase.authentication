@@ -5,8 +5,8 @@
     /// </summary>
     internal class SetAccountInfo : FirebaseRequestBase<SetAccountInfoRequest, SetAccountInfoResponse>
     {
-        public SetAccountInfo(FirebaseConfiguration config)
-            : base(config)
+        public SetAccountInfo(FirebaseConfiguration configuraton)
+            : base(configuraton)
         {
         }
 
