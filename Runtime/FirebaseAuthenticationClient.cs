@@ -6,6 +6,7 @@ using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Firebase.Authentication
 {
@@ -88,9 +89,9 @@ namespace Firebase.Authentication
                 throw new ArgumentException($"{nameof(oauthProvider)} cannot be null.");
             }
 
-            await CheckAuthDomain();
+            await CheckAuthDomain().ConfigureAwait(false);
 
-            var continuation = await oauthProvider.SignInAsync();
+            var continuation = await oauthProvider.SignInAsync().ConfigureAwait(false);
             var redirectUri = await redirectDelegate(continuation.Uri).ConfigureAwait(false);
 
             if (string.IsNullOrEmpty(redirectUri))
@@ -239,9 +240,19 @@ namespace Firebase.Authentication
 
             var result = await projectConfig.ExecuteAsync(null).ConfigureAwait(false);
 
+            if (string.IsNullOrWhiteSpace(result.ProjectId))
+            {
+                throw new FirebaseAuthException("Failed to get a valid project configuration from Google!", AuthErrorReason.Unknown);
+            }
+
+            if (result.AuthorizedDomains == null)
+            {
+                throw new FirebaseAuthException($"Failed to find valid domains for {result.ProjectId}", AuthErrorReason.Undefined);
+            }
+
             if (!result.AuthorizedDomains.Contains(Configuration.AuthDomain))
             {
-                throw new InvalidOperationException("Auth domain is not among the authorized ones");
+                throw new FirebaseAuthException($"{Configuration.AuthDomain} is not among the authorized domains:\n{string.Join(",\n", result.AuthorizedDomains)}", AuthErrorReason.Undefined);
             }
 
             domainChecked = true;
