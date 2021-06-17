@@ -63,5 +63,5 @@ firebaseClient.SignOut();
 
 ## Additional Packages
 
-- Firebase.Database (Coming soon!)
+- [Firebase.Realtime-Database](https://github.com/StephenHodgson/com.firebase.realtime-database)
 - [Firebase.Storage](https://github.com/StephenHodgson/com.firebase.storage)
