@@ -11,7 +11,13 @@ namespace Firebase.Authentication
 {
     public class FirebaseAuthentication
     {
-        public FirebaseAuthentication(string projectId, string apiKey, string authDomain)
+        /// <summary>
+        /// Creates a new <see cref="FirebaseAuthentication"/> instance.
+        /// </summary>
+        /// <param name="projectId">The project id.</param>
+        /// <param name="apiKey">The api key.</param>
+        /// <param name="authDomain">Optional, override auth domain to use. (Defaults to 'project-id.firebaseapp.com')</param>
+        public FirebaseAuthentication(string projectId, string apiKey, string authDomain = null)
         {
             if (string.IsNullOrWhiteSpace(projectId))
             {
@@ -23,14 +29,9 @@ namespace Firebase.Authentication
                 throw new ArgumentException($"no {nameof(apiKey)} provided.");
             }
 
-            if (string.IsNullOrWhiteSpace(authDomain))
-            {
-                throw new ArgumentException($"no {nameof(authDomain)} provided.");
-            }
-
             ProjectId = projectId;
             ApiKey = apiKey;
-            AuthDomain = authDomain;
+            AuthDomain = authDomain ?? $"{projectId}.firebaseapp.com";
         }
 
         private static FirebaseAuthentication cachedDefault = null;
@@ -83,7 +84,6 @@ namespace Firebase.Authentication
 
             string projectId = null;
             string key = null;
-            string authDomain = null;
             var currentDirectory = new DirectoryInfo(directory);
 
             while (key == null && currentDirectory.Parent != null)
@@ -94,7 +94,6 @@ namespace Firebase.Authentication
                     var json = File.ReadAllText(path);
                     var googleServices = JsonConvert.DeserializeObject<GoogleServices>(json);
                     projectId = googleServices.ProjectInfo.ProjectId;
-                    authDomain = $"{projectId}.firebaseapp.com";
                     key = googleServices.Client.FirstOrDefault()?.ApiKey.FirstOrDefault()?.CurrentKey;
                 }
 
@@ -108,8 +107,8 @@ namespace Firebase.Authentication
                 }
             }
 
-            return !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(authDomain)
-                ? new FirebaseAuthentication(projectId, key, authDomain)
+            return !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(projectId)
+                ? new FirebaseAuthentication(projectId, key)
                 : null;
         }
 
