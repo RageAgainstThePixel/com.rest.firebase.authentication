@@ -59,19 +59,12 @@ namespace Firebase.Authentication
         {
             if (forceRefresh || Credential.IsExpired())
             {
-                var refresh = await token.ExecuteAsync(new RefreshTokenRequest
-                {
-                    GrantType = RefreshToken,
-                    RefreshToken = Credential.RefreshToken
-                });
+                var refresh = await token.ExecuteAsync(
+                    new RefreshTokenRequest(RefreshToken, Credential.RefreshToken))
+                    .ConfigureAwait(false);
 
-                Credential = new FirebaseCredential
-                {
-                    ExpiresIn = refresh.ExpiresIn,
-                    IdToken = refresh.IdToken,
-                    ProviderType = Credential.ProviderType,
-                    RefreshToken = refresh.RefreshToken
-                };
+                Credential = new FirebaseCredential(refresh.IdToken, refresh.RefreshToken, refresh.ExpiresIn,
+                    Credential.ProviderType);
 
                 configuration.UserManager.UpdateExistingUser(this);
             }
@@ -86,20 +79,10 @@ namespace Firebase.Authentication
         public async Task ChangePasswordAsync(string password)
         {
             var idToken = await GetIdTokenAsync().ConfigureAwait(false);
-            var result = await updateAccount.ExecuteAsync(new UpdateAccountRequest
-            {
-                IdToken = idToken,
-                Password = password,
-                ReturnSecureToken = true
-            }).ConfigureAwait(false);
+            var result = await updateAccount.ExecuteAsync(new UpdateAccountRequest(idToken, password, true)).ConfigureAwait(false);
 
-            Credential = new FirebaseCredential
-            {
-                ExpiresIn = result.ExpiresIn,
-                IdToken = result.IdToken,
-                ProviderType = Credential.ProviderType,
-                RefreshToken = result.RefreshToken
-            };
+            Credential = new FirebaseCredential(result.IdToken, result.RefreshToken, result.ExpiresIn,
+                Credential.ProviderType);
 
             configuration.UserManager.UpdateExistingUser(this);
         }
@@ -112,13 +95,13 @@ namespace Firebase.Authentication
         {
             var idToken = await GetIdTokenAsync().ConfigureAwait(false);
             var result = await setAccountInfo.ExecuteAsync(new SetAccountDisplayName
-            {
-                IdToken = idToken,
-                DisplayName = displayName,
-                ReturnSecureToken = true
-            }).ConfigureAwait(false);
+            (
+                idToken,
+                true,
+                displayName
+            )).ConfigureAwait(false);
 
-            Info.DisplayName = result.DisplayName;
+            Info = new UserInfo(result);
 
             configuration.UserManager.UpdateExistingUser(this);
         }
@@ -147,6 +130,12 @@ namespace Firebase.Authentication
             return result;
         }
 
+        /// <summary>
+        /// Links the user account with the specified <see cref="providerType"/>.
+        /// </summary>
+        /// <param name="providerType">The <see cref="FirebaseProviderType"/>s to unlink from this user.</param>
+        /// <param name="redirectDelegate"></param>
+        /// <returns></returns>
         public async Task<FirebaseUser> LinkWithRedirectAsync(FirebaseProviderType providerType, SignInRedirectDelegate redirectDelegate)
         {
             var provider = configuration.AuthProviders.FirstOrDefault(p => p.ProviderType == providerType);
@@ -178,18 +167,14 @@ namespace Firebase.Authentication
         /// <summary>
         /// Unlinks a provider from a user account.
         /// </summary>
-        public async Task<FirebaseUser> UnlinkAsync(FirebaseProviderType providerType)
+        /// <param name="providerTypes">The <see cref="FirebaseProviderType"/>s to unlink from this user.</param>
+        /// <returns>The <see cref="FirebaseUser"/>.</returns>
+        public async Task<FirebaseUser> UnlinkAsync(FirebaseProviderType[] providerTypes)
         {
             var idToken = await GetIdTokenAsync().ConfigureAwait(false);
-            await unlinkAccount.ExecuteAsync(new SetAccountUnlinkRequest
-            {
-                IdToken = idToken,
-                DeleteProviders = new[]
-                {
-                    providerType
-                }
-            });
-
+            await unlinkAccount.ExecuteAsync(
+                new SetAccountUnlinkRequest(idToken, providerTypes))
+                .ConfigureAwait(false);
             return this;
         }
 
@@ -198,10 +183,7 @@ namespace Firebase.Authentication
         /// </summary>
         public async Task DeleteAsync()
         {
-            var tokenRequest = new IdTokenRequest
-            {
-                IdToken = await GetIdTokenAsync().ConfigureAwait(false)
-            };
+            var tokenRequest = new IdTokenRequest(await GetIdTokenAsync().ConfigureAwait(false));
             await deleteAccount.ExecuteAsync(tokenRequest).ConfigureAwait(false);
             configuration.UserManager.DeleteExistingUser(Uid);
         }

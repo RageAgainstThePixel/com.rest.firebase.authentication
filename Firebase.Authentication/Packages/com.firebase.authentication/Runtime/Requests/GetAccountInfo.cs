@@ -2,9 +2,6 @@
 
 namespace Firebase.Authentication.Requests
 {
-    /// <summary>
-    /// Gets basic info about a user and their account.
-    /// </summary>
     internal class GetAccountInfo : FirebaseRequestBase<IdTokenRequest, GetAccountInfoResponse>
     {
         public GetAccountInfo(FirebaseConfiguration configuration)

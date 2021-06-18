@@ -6,7 +6,6 @@ using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Firebase.Authentication
 {
@@ -16,7 +15,7 @@ namespace Firebase.Authentication
     public class FirebaseAuthenticationClient
     {
         internal readonly FirebaseConfiguration Configuration;
-        private readonly ProjectConfig projectConfig;
+        private readonly ProjectConfiguration projectConfiguration;
         private readonly SignupNewUser signupNewUser;
         private readonly CreateAuthUri createAuthUri;
 
@@ -25,7 +24,7 @@ namespace Firebase.Authentication
         public FirebaseAuthenticationClient(FirebaseAuthentication authentication = null, FirebaseAuthProvider[] providers = null, string userCacheDirectory = null)
         {
             Configuration = new FirebaseConfiguration(authentication, providers, userCacheDirectory);
-            projectConfig = new ProjectConfig(Configuration);
+            projectConfiguration = new ProjectConfiguration(Configuration);
             signupNewUser = new SignupNewUser(Configuration);
             createAuthUri = new CreateAuthUri(Configuration);
 
@@ -59,6 +58,11 @@ namespace Firebase.Authentication
             }
             private set => loggedInUser = value;
         }
+
+        /// <summary>
+        /// Is there a user currently logged in?
+        /// </summary>
+        public bool IsUserLoggedIn => loggedInUser != null;
 
         private event Action<FirebaseUser> StateChanged;
 
@@ -129,24 +133,12 @@ namespace Firebase.Authentication
         /// </summary>
         public async Task<FirebaseUser> SignInAnonymouslyAsync()
         {
-            var response = await signupNewUser.ExecuteAsync(new SignupNewUserRequest
-            {
-                ReturnSecureToken = true
-            }).ConfigureAwait(false);
+            var response = await signupNewUser.ExecuteAsync(new SignupNewUserRequest(null, null, true)).ConfigureAwait(false);
 
-            var credential = new FirebaseCredential
-            {
-                ExpiresIn = response.ExpiresIn,
-                IdToken = response.IdToken,
-                RefreshToken = response.RefreshToken,
-                ProviderType = FirebaseProviderType.Anonymous
-            };
+            var credential = new FirebaseCredential(response.IdToken, response.RefreshToken, response.ExpiresIn,
+                FirebaseProviderType.Anonymous);
 
-            var info = new UserInfo
-            {
-                Uid = response.LocalId,
-                IsAnonymous = true
-            };
+            var info = new UserInfo(response);
 
             var user = new FirebaseUser(Configuration, info, credential);
             SaveToken(user);
@@ -160,11 +152,7 @@ namespace Firebase.Authentication
         {
             await CheckAuthDomain().ConfigureAwait(false);
 
-            var request = new CreateAuthUriRequest
-            {
-                ContinueUri = Configuration.RedirectUri,
-                Identifier = email
-            };
+            var request = new CreateAuthUriRequest(null, Configuration.RedirectUri, null, null, email);
 
             var response = await createAuthUri.ExecuteAsync(request).ConfigureAwait(false);
 
@@ -238,7 +226,7 @@ namespace Firebase.Authentication
                 return;
             }
 
-            var result = await projectConfig.ExecuteAsync(null).ConfigureAwait(false);
+            var result = await projectConfiguration.ExecuteAsync(null).ConfigureAwait(false);
 
             if (string.IsNullOrWhiteSpace(result.ProjectId))
             {

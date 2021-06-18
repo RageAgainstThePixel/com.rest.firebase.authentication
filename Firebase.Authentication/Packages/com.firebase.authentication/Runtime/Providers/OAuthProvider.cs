@@ -38,17 +38,14 @@ namespace Firebase.Authentication.Providers
         protected internal override async Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential)
         {
             var authCredential = (OAuthCredential)credential;
-            var (user, response) = await verifyAssertion.ExecuteAndParseAsync(credential.ProviderType, new VerifyAssertionRequest
-            {
-                RequestUri = $"https://{Configuration.AuthDomain}",
-                PostBody = authCredential.GetPostBodyValue(credential.ProviderType),
-                PendingToken = authCredential.GetPendingTokenValue(),
-                ReturnIdpCredential = true,
-                ReturnSecureToken = true
-            }).ConfigureAwait(false);
-
+            var (user, response) = await verifyAssertion.ExecuteAndParseAsync(credential.ProviderType,
+                new VerifyAssertionRequest(
+                    idToken: null,
+                    $"https://{Configuration.AuthDomain}",
+                    authCredential.GetPostBodyValue(credential.ProviderType),
+                    authCredential.GetPendingTokenValue()))
+                .ConfigureAwait(false);
             credential = GetCredential(response);
-
             response.Validate(credential);
             return user;
         }
@@ -56,20 +53,15 @@ namespace Firebase.Authentication.Providers
         protected internal override async Task<FirebaseUser> LinkWithCredentialAsync(string idToken, AuthCredential credential)
         {
             var authCredential = (OAuthCredential)credential;
-            var (user, response) = await verifyAssertion.ExecuteAndParseAsync(credential.ProviderType, new VerifyAssertionRequest
-            {
-                IdToken = idToken,
-                RequestUri = $"https://{Configuration.AuthDomain}",
-                PostBody = authCredential.GetPostBodyValue(authCredential.ProviderType),
-                PendingToken = authCredential.GetPendingTokenValue(),
-                ReturnIdpCredential = true,
-                ReturnSecureToken = true
-            }).ConfigureAwait(false);
-
+            var (user, response) = await verifyAssertion.ExecuteAndParseAsync(credential.ProviderType,
+                new VerifyAssertionRequest(
+                    idToken,
+                    $"https://{Configuration.AuthDomain}",
+                    authCredential.GetPostBodyValue(authCredential.ProviderType),
+                    authCredential.GetPendingTokenValue()))
+                .ConfigureAwait(false);
             credential = GetCredential(response);
-
             response.Validate(credential);
-
             return user;
         }
 
@@ -92,23 +84,20 @@ namespace Firebase.Authentication.Providers
             return GetCredential(
                 ProviderType,
                 response.PendingToken ?? response.OauthAccessToken,
-                response.PendingToken == null ? OAuthCredentialTokenType.AccessToken : OAuthCredentialTokenType.PendingToken);
+                response.PendingToken == null
+                    ? OAuthCredentialTokenType.AccessToken
+                    : OAuthCredentialTokenType.PendingToken);
         }
 
         internal async Task<OAuthContinuation> SignInAsync()
         {
-            if (LocaleParameterName != null && !parameters.ContainsKey(LocaleParameterName))
+            if (LocaleParameterName != null &&
+                !parameters.ContainsKey(LocaleParameterName))
             {
                 parameters[LocaleParameterName] = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             }
 
-            var response = await SendAuthRequest(new CreateAuthUriRequest
-            {
-                ContinueUri = Configuration.RedirectUri,
-                ProviderId = ProviderType,
-                CustomParameters = parameters,
-                OauthScope = scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null
-            }).ConfigureAwait(false);
+            var response = await SendAuthRequest(new CreateAuthUriRequest(ProviderType, Configuration.RedirectUri, parameters, scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null, null)).ConfigureAwait(false);
 
             return new OAuthContinuation(Configuration, response.AuthUri, response.SessionId, ProviderType);
         }

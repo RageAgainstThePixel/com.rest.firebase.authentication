@@ -1,17 +1,36 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using UnityEngine;
+
 namespace Firebase.Authentication.Requests
 {
+    [Serializable]
     internal class SignupNewUserResponse
     {
-        public string IdToken { get; set; }
+        [SerializeField]
+        private string idToken;
 
-        public string Email { get; set; }
+        public string IdToken => idToken;
 
-        public string RefreshToken { get; set; }
+        [SerializeField]
+        private string email;
 
-        public int ExpiresIn { get; set; }
+        public string Email => email;
 
-        public string LocalId { get; set; }
+        [SerializeField]
+        private string refreshToken;
+
+        public string RefreshToken => refreshToken;
+
+        [SerializeField]
+        private int expiresIn;
+
+        public int ExpiresIn => expiresIn;
+
+        [SerializeField]
+        private string localId;
+
+        public string LocalId => localId;
     }
 }
