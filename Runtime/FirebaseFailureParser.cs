@@ -98,12 +98,14 @@ namespace Firebase.Authentication
                     // possible errors from Email/Password Account Signup (via signupNewUser or setAccountInfo)
                     return AuthErrorReason.WeakPassword;
                 }
-                else if (errorData?.error?.message?.StartsWith("TOO_MANY_ATTEMPTS_TRY_LATER :") ?? false)
+
+                if (errorData?.error?.message?.StartsWith("TOO_MANY_ATTEMPTS_TRY_LATER :") ?? false)
                 {
                     // possible errors from Email/Password Signin
                     return AuthErrorReason.TooManyAttemptsTryLater;
                 }
-                else if (errorData?.error?.message?.Contains("Bad access token") ?? false)
+
+                if (errorData?.error?.message?.Contains("Bad access token") ?? false)
                 {
                     return AuthErrorReason.InvalidAccessToken;
                 }

@@ -11,15 +11,15 @@ namespace Firebase.Authentication.Providers
     /// </summary>
     internal class OAuthContinuation
     {
-        private readonly VerifyAssertion verifyAssertion;
-        private readonly FirebaseConfiguration config;
         private readonly string sessionId;
+        private readonly VerifyAssertion verifyAssertion;
         private readonly FirebaseProviderType providerType;
+        private readonly FirebaseConfiguration configuration;
 
-        internal OAuthContinuation(FirebaseConfiguration config, string uri, string sessionId, FirebaseProviderType providerType)
+        internal OAuthContinuation(FirebaseConfiguration configuration, string uri, string sessionId, FirebaseProviderType providerType)
         {
-            verifyAssertion = new VerifyAssertion(config);
-            this.config = config;
+            verifyAssertion = new VerifyAssertion(configuration);
+            this.configuration = configuration;
             Uri = uri;
             this.sessionId = sessionId;
             this.providerType = providerType;
@@ -40,15 +40,14 @@ namespace Firebase.Authentication.Providers
         {
             var (user, response) = await verifyAssertion.ExecuteAndParseAsync(
                 providerType,
-                new VerifyAssertionRequest
-                {
-                    IdToken = idToken,
-                    RequestUri = redirectUri,
-                    SessionId = sessionId,
-                    ReturnIdpCredential = true,
-                    ReturnSecureToken = true
-                }).ConfigureAwait(false);
-            var provider = config.GetAuthProvider(providerType) as OAuthProvider ??
+                new VerifyAssertionRequest(
+                    idToken,
+                    redirectUri,
+                    postBody: null,
+                    pendingToken: null,
+                    sessionId))
+                .ConfigureAwait(false);
+            var provider = configuration.GetAuthProvider(providerType) as OAuthProvider ??
                            throw new InvalidOperationException($"{providerType} is not a OAuthProvider");
             var credential = provider.GetCredential(response);
             response.Validate(credential);

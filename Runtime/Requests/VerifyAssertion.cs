@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 
 namespace Firebase.Authentication.Requests
 {
-    /// <summary>
-    /// Finishes oauth authentication processing.
-    /// </summary>
     internal class VerifyAssertion : FirebaseRequestBase<VerifyAssertionRequest, VerifyAssertionResponse>
     {
         public VerifyAssertion(FirebaseConfiguration configuration)
@@ -36,30 +33,17 @@ namespace Firebase.Authentication.Requests
 
         public async Task<(FirebaseUser, VerifyAssertionResponse)> ExecuteAndParseAsync(FirebaseProviderType providerType, VerifyAssertionRequest request)
         {
-            var assertion = await ExecuteAsync(request).ConfigureAwait(false);
+            var response = await ExecuteAsync(request).ConfigureAwait(false);
 
-            var userInfo = new UserInfo
-            {
-                DisplayName = assertion.DisplayName,
-                FirstName = assertion.FirstName,
-                LastName = assertion.LastName,
-                Email = assertion.Email,
-                IsEmailVerified = assertion.EmailVerified,
-                FederatedId = assertion.FederatedId,
-                Uid = assertion.LocalId,
-                PhotoUrl = assertion.PhotoUrl,
-                IsAnonymous = false
-            };
-
-            var token = new FirebaseCredential
-            {
-                ExpiresIn = assertion.ExpiresIn,
-                RefreshToken = assertion.RefreshToken,
-                IdToken = assertion.IdToken,
-                ProviderType = providerType
-            };
-
-            return (new FirebaseUser(Configuration, userInfo, token), assertion);
+            return (new FirebaseUser(
+                Configuration,
+                new UserInfo(response),
+                new FirebaseCredential(
+                    response.IdToken,
+                    response.RefreshToken,
+                    response.ExpiresIn,
+                providerType)),
+                response);
         }
 
         protected override string UrlFormat => Endpoints.GoogleIdentityUrl;

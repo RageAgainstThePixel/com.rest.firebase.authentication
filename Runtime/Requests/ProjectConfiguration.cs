@@ -4,12 +4,9 @@ using System.Net.Http;
 
 namespace Firebase.Authentication.Requests
 {
-    /// <summary>
-    /// Get basic config info about the firebase project.
-    /// </summary>
-    internal class ProjectConfig : FirebaseRequestBase<object, ProjectConfigResponse>
+    internal class ProjectConfiguration : FirebaseRequestBase<object, ProjectConfigResponse>
     {
-        public ProjectConfig(FirebaseConfiguration configuration)
+        public ProjectConfiguration(FirebaseConfiguration configuration)
             : base(configuration)
         {
         }

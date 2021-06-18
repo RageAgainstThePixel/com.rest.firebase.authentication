@@ -1,55 +1,122 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Newtonsoft.Json;
+using System;
+using UnityEngine;
 
 namespace Firebase.Authentication.Requests
 {
-    public class VerifyAssertionResponse
+    [Serializable]
+    internal class VerifyAssertionResponse
     {
-        public string FederatedId { get; set; }
+        [SerializeField]
+        private string federatedId;
 
-        public FirebaseProviderType ProviderId { get; set; }
+        public string FederatedId => federatedId;
 
-        public string Email { get; set; }
+        [SerializeField]
+        private FirebaseProviderType providerId;
 
-        public bool EmailVerified { get; set; }
+        public FirebaseProviderType ProviderId => providerId;
 
-        public string FirstName { get; set; }
+        [SerializeField]
+        private string email;
 
-        public string FullName { get; set; }
+        public string Email => email;
 
-        public string LastName { get; set; }
+        [SerializeField]
+        private bool emailVerified;
 
-        public string PhotoUrl { get; set; }
+        public bool EmailVerified => emailVerified;
 
-        public string LocalId { get; set; }
+        [SerializeField]
+        private string firstName;
 
-        public string DisplayName { get; set; }
+        public string FirstName => firstName;
 
-        public string IdToken { get; set; }
+        [SerializeField]
+        private string fullName;
 
-        public string Context { get; set; }
+        public string FullName => fullName;
 
-        public string OauthAccessToken { get; set; }
+        [SerializeField]
+        private string lastName;
 
-        public string OauthTokenSecret { get; set; }
+        public string LastName => lastName;
 
-        public int OauthExpireIn { get; set; }
+        [SerializeField]
+        private string photoUrl;
 
-        public string RefreshToken { get; set; }
+        public string PhotoUrl => photoUrl;
 
-        public int ExpiresIn { get; set; }
+        [SerializeField]
+        private string localId;
 
-        public string OauthIdToken { get; set; }
+        public string LocalId => localId;
 
-        public string PendingToken { get; set; }
+        [SerializeField]
+        private string displayName;
 
-        public bool NeedConfirmation { get; set; }
+        public string DisplayName => displayName;
 
-        [JsonProperty("verifiedProvider")]
-        public FirebaseProviderType[] VerifiedProviders { get; set; }
+        [SerializeField]
+        private string idToken;
 
-        public string ErrorMessage { get; set; }
+        public string IdToken => idToken;
+
+        [SerializeField]
+        private string context;
+
+        public string Context => context;
+
+        [SerializeField]
+        private string oauthAccessToken;
+
+        public string OauthAccessToken => oauthAccessToken;
+
+        [SerializeField]
+        private string oauthTokenSecret;
+
+        public string OauthTokenSecret => oauthTokenSecret;
+
+        [SerializeField]
+        private int oauthExpireIn;
+
+        public int OauthExpireIn => oauthExpireIn;
+
+        [SerializeField]
+        private string refreshToken;
+
+        public string RefreshToken => refreshToken;
+
+        [SerializeField]
+        private int expiresIn;
+
+        public int ExpiresIn => expiresIn;
+
+        [SerializeField]
+        private string oauthIdToken;
+
+        public string OauthIdToken => oauthIdToken;
+
+        [SerializeField]
+        private string pendingToken;
+
+        public string PendingToken => pendingToken;
+
+        [SerializeField]
+        private bool needConfirmation;
+
+        public bool NeedConfirmation => needConfirmation;
+
+        [SerializeField]
+        private FirebaseProviderType[] verifiedProvider;
+
+        public FirebaseProviderType[] VerifiedProviders => verifiedProvider;
+
+        [SerializeField]
+        private string errorMessage;
+
+        public string ErrorMessage => errorMessage;
 
         public void Validate(AuthCredential credential)
             => VerifyAssertion.ValidateAssertionResponse(this, credential);

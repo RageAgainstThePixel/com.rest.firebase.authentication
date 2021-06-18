@@ -1,33 +1,61 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Newtonsoft.Json;
 using System;
+using UnityEngine;
 
 namespace Firebase.Authentication.Requests
 {
+    [Serializable]
     internal class GetAccountInfoResponseUserInfo
     {
-        public string LocalId { get; set; }
+        [SerializeField]
+        private string localId;
 
-        public string Email { get; set; }
+        public string LocalId => localId;
 
-        public string DisplayName { get; set; }
+        [SerializeField]
+        private string email;
 
-        public string PhotoUrl { get; set; }
+        public string Email => email;
 
-        public bool EmailVerified { get; set; }
+        [SerializeField]
+        private string displayName;
 
-        public ProviderUserInfo[] ProviderUserInfo { get; set; }
+        public string DisplayName => displayName;
 
-        [JsonConverter(typeof(JavaScriptDateTimeConverter))]
-        public DateTime ValidSince { get; set; }
+        [SerializeField]
+        private string photoUrl;
 
-        [JsonConverter(typeof(JavaScriptDateTimeConverter))]
-        public DateTime LastLoginAt { get; set; }
+        public string PhotoUrl => photoUrl;
 
-        [JsonConverter(typeof(JavaScriptDateTimeConverter))]
-        public DateTime CreatedAt { get; set; }
+        [SerializeField]
+        private bool emailVerified;
 
-        public DateTime LastRefreshAt { get; set; }
+        public bool EmailVerified => emailVerified;
+
+        [SerializeField]
+        private ProviderUserInfo[] providerUserInfo;
+
+        public ProviderUserInfo[] ProviderUserInfo => providerUserInfo;
+
+        [SerializeField]
+        private long validSince;
+
+        public DateTime ValidSince => DateTimeOffset.FromUnixTimeSeconds(validSince).DateTime;
+
+        [SerializeField]
+        private long lastLoginAt;
+
+        public DateTime LastLoginAt => DateTimeOffset.FromUnixTimeMilliseconds(lastLoginAt).DateTime;
+
+        [SerializeField]
+        private long createdAt;
+
+        public DateTime CreatedAt => DateTimeOffset.FromUnixTimeMilliseconds(createdAt).DateTime;
+
+        [SerializeField]
+        private string lastRefreshAt;
+
+        public string LastRefreshAt => lastRefreshAt;
     }
 }

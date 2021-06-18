@@ -1,6 +1,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Firebase.Authentication.Tests
 {
@@ -16,11 +17,12 @@ namespace Firebase.Authentication.Tests
 
             Assert.NotNull(user);
             Assert.NotNull(firebaseClient.User);
+            Assert.IsTrue(firebaseClient.IsUserLoggedIn);
             Assert.IsTrue(user.Info.Uid == firebaseClient.User.Uid);
 
             firebaseClient.SignOut();
 
-            Assert.IsNull(firebaseClient.User);
+            Assert.IsFalse(firebaseClient.IsUserLoggedIn);
         }
 
         [Test]
@@ -34,8 +36,10 @@ namespace Firebase.Authentication.Tests
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(token));
 
+            user.ChangeDisplayNameAsync("new name").Wait();
+
             firebaseClient.SignOut();
-            Assert.IsNull(firebaseClient.User);
+            Assert.IsFalse(firebaseClient.IsUserLoggedIn);
         }
 
         [Test]
@@ -51,7 +55,7 @@ namespace Firebase.Authentication.Tests
 
             user.DeleteAsync().Wait();
 
-            Assert.IsNull(firebaseClient.User);
+            Assert.IsFalse(firebaseClient.IsUserLoggedIn);
         }
     }
 }

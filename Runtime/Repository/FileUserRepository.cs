@@ -1,7 +1,6 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -14,7 +13,6 @@ namespace Firebase.Authentication.Repository
     internal class FileUserRepository : IUserRepository
     {
         private readonly string filename;
-        private readonly JsonSerializerSettings options;
         private readonly FirebaseConfiguration configuration;
 
         /// <summary>
@@ -27,8 +25,6 @@ namespace Firebase.Authentication.Repository
             this.configuration = configuration;
             var data = Application.persistentDataPath;
             filename = Path.Combine(data, cacheDirectory, "firebase.json");
-            options = new JsonSerializerSettings();
-            options.Converters.Add(new StringEnumConverter());
 
             Directory.CreateDirectory(Path.Combine(data, cacheDirectory));
         }
@@ -38,14 +34,14 @@ namespace Firebase.Authentication.Repository
             get
             {
                 var content = File.ReadAllText(filename);
-                var obj = JsonConvert.DeserializeObject<StoredUser>(content, options);
+                var obj = JsonUtility.FromJson<StoredUser>(content);
                 return new FirebaseUser(configuration, obj.UserInfo, obj.Credential);
             }
         }
 
         public void SaveUser(FirebaseUser newUser)
         {
-            var content = JsonConvert.SerializeObject(new StoredUser(newUser.Info, newUser.Credential), options);
+            var content = JsonUtility.ToJson(new StoredUser(newUser.Info, newUser.Credential));
             File.WriteAllText(filename, content);
         }
 
@@ -54,20 +50,26 @@ namespace Firebase.Authentication.Repository
             File.Delete(filename);
         }
 
-        public bool UserExists
-            => File.Exists(filename);
+        public bool UserExists => File.Exists(filename);
 
+        [Serializable]
         private class StoredUser
         {
             public StoredUser(UserInfo userInfo, FirebaseCredential credential)
             {
-                UserInfo = userInfo;
-                Credential = credential;
+                this.userInfo = userInfo;
+                this.credential = credential;
             }
 
-            public UserInfo UserInfo { get; }
+            [SerializeField]
+            private UserInfo userInfo;
 
-            public FirebaseCredential Credential { get; }
+            public UserInfo UserInfo => userInfo;
+
+            [SerializeField]
+            private FirebaseCredential credential;
+
+            public FirebaseCredential Credential => credential;
         }
     }
 }

@@ -2,9 +2,6 @@
 
 using Firebase.Authentication.Providers;
 using Firebase.Authentication.Repository;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -33,19 +30,6 @@ namespace Firebase.Authentication
 
             AuthProviders = authProviders;
             HttpClient = new HttpClient();
-            JsonSettings = new JsonSerializerSettings
-            {
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                },
-                DefaultValueHandling = DefaultValueHandling.Ignore
-            };
-            JsonSettings.Converters.Add(
-                new StringEnumConverter
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                });
             UserManager = new UserManager(string.IsNullOrWhiteSpace(userCacheDirectory)
                 ? (IUserRepository)new InMemoryRepository()
                 : (IUserRepository)new FileUserRepository(this, userCacheDirectory));
@@ -63,8 +47,6 @@ namespace Firebase.Authentication
         public FirebaseAuthProvider[] AuthProviders { get; }
 
         internal string RedirectUri { get; }
-
-        internal JsonSerializerSettings JsonSettings { get; }
 
         internal HttpClient HttpClient { get; }
 
