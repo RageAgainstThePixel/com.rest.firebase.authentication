@@ -29,8 +29,6 @@ namespace Firebase.Authentication.Providers
         protected internal abstract Task<FirebaseUser> LinkWithCredentialAsync(string idToken, AuthCredential credential);
 
         internal async Task<CreateAuthUriResponse> SendAuthRequest(CreateAuthUriRequest request)
-        {
-            return await createAuthUri.ExecuteAsync(request);
-        }
+            => await createAuthUri.ExecuteAsync(request);
     }
 }

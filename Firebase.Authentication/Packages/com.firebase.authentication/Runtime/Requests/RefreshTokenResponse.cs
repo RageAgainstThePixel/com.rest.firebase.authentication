@@ -1,15 +1,31 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using UnityEngine;
+
 namespace Firebase.Authentication.Requests
 {
+    [Serializable]
     internal class RefreshTokenResponse
     {
-        public int ExpiresIn { get; set; }
+        [SerializeField]
+        private int expires_in;
 
-        public string RefreshToken { get; set; }
+        public int ExpiresIn => expires_in;
 
-        public string IdToken { get; set; }
+        [SerializeField]
+        private string refresh_token;
 
-        public string UserId { get; set; }
+        public string RefreshToken => refresh_token;
+
+        [SerializeField]
+        private string id_token;
+
+        public string IdToken => id_token;
+
+        [SerializeField]
+        private string user_id;
+
+        public string UserId => user_id;
     }
 }

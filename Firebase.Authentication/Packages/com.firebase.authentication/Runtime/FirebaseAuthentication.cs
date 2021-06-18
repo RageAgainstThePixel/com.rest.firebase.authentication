@@ -1,10 +1,10 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Firebase.Authentication
@@ -92,7 +92,7 @@ namespace Firebase.Authentication
                 {
                     var path = Path.Combine(currentDirectory.FullName, filename);
                     var json = File.ReadAllText(path);
-                    var googleServices = JsonConvert.DeserializeObject<GoogleServices>(json);
+                    var googleServices = JsonUtility.FromJson<GoogleServices>(json);
                     projectId = googleServices.ProjectInfo.ProjectId;
                     key = googleServices.Client.FirstOrDefault()?.ApiKey.FirstOrDefault()?.CurrentKey;
                 }
@@ -114,106 +114,163 @@ namespace Firebase.Authentication
 
         #region Google Services Data Object
 
+        [Serializable]
         private class GoogleServices
         {
-            [JsonProperty("project_info")]
-            public ProjectInfo ProjectInfo { get; set; }
+            [SerializeField]
+            private ProjectInfo project_info;
 
-            [JsonProperty("client")]
-            public List<Client> Client { get; set; }
+            public ProjectInfo ProjectInfo => project_info;
 
-            [JsonProperty("configuration_version")]
-            public string ConfigurationVersion { get; set; }
+            [SerializeField]
+            private List<Client> client;
+
+            public List<Client> Client => client;
+
+            [SerializeField]
+            private string configuration_version;
+
+            public string ConfigurationVersion => configuration_version;
         }
 
+        [Serializable]
         private class ProjectInfo
         {
-            [JsonProperty("project_number")]
-            public string ProjectNumber { get; set; }
+            [SerializeField]
+            private string project_number;
 
-            [JsonProperty("firebase_url")]
-            public string FirebaseUrl { get; set; }
+            public string ProjectNumber => project_number;
 
-            [JsonProperty("project_id")]
-            public string ProjectId { get; set; }
+            [SerializeField]
+            private string firebase_url;
 
-            [JsonProperty("storage_bucket")]
-            public string StorageBucket { get; set; }
+            public string FirebaseUrl => firebase_url;
+
+            [SerializeField]
+            private string project_id;
+
+            public string ProjectId => project_id;
+
+            [SerializeField]
+            private string storage_bucket;
+
+            public string StorageBucket => storage_bucket;
         }
 
+        [Serializable]
         private class AndroidClientInfo
         {
-            [JsonProperty("package_name")]
-            public string PackageName { get; set; }
+            [SerializeField]
+            private string package_name;
+
+            public string PackageName => package_name;
         }
 
+        [Serializable]
         private class ClientInfo
         {
-            [JsonProperty("mobilesdk_app_id")]
-            public string MobilesdkAppId { get; set; }
+            [SerializeField]
+            private string mobilesdk_app_id;
 
-            [JsonProperty("android_client_info")]
-            public AndroidClientInfo AndroidClientInfo { get; set; }
+            public string MobileSdkAppId => mobilesdk_app_id;
+
+            [SerializeField]
+            private AndroidClientInfo android_client_info;
+
+            public AndroidClientInfo AndroidClientInfo => android_client_info;
         }
 
+        [Serializable]
         private class OauthClient
         {
-            [JsonProperty("client_id")]
-            public string ClientId { get; set; }
+            [SerializeField]
+            private string client_id;
 
-            [JsonProperty("client_type")]
-            public int ClientType { get; set; }
+            public string ClientId => client_id;
+
+            [SerializeField]
+            private int client_type;
+
+            public int ClientType => client_type;
         }
 
+        [Serializable]
         private class ApiKeyProperty
         {
-            [JsonProperty("current_key")]
-            public string CurrentKey { get; set; }
+            [SerializeField]
+            private string current_key;
+
+            public string CurrentKey => current_key;
         }
 
+        [Serializable]
         private class IosInfo
         {
-            [JsonProperty("bundle_id")]
-            public string BundleId { get; set; }
+            [SerializeField]
+            private string bundle_id;
+
+            public string BundleId => bundle_id;
         }
 
+        [Serializable]
         private class OtherPlatformOauthClient
         {
-            [JsonProperty("client_id")]
-            public string ClientId { get; set; }
+            [SerializeField]
+            private string client_id;
 
-            [JsonProperty("client_type")]
-            public int ClientType { get; set; }
+            public string ClientId => client_id;
 
-            [JsonProperty("ios_info")]
-            public IosInfo IosInfo { get; set; }
+            [SerializeField]
+            private int client_type;
+
+            public int ClientType => client_type;
+
+            [SerializeField]
+            private IosInfo ios_info;
+
+            public IosInfo IosInfo => ios_info;
         }
 
-        private class AppinviteService
+        [Serializable]
+        private class AppInviteService
         {
-            [JsonProperty("other_platform_oauth_client")]
-            public List<OtherPlatformOauthClient> OtherPlatformOauthClient { get; set; }
+            [SerializeField]
+            private List<OtherPlatformOauthClient> other_platform_oauth_client;
+
+            public List<OtherPlatformOauthClient> OtherPlatformOauthClient => other_platform_oauth_client;
         }
 
+        [Serializable]
         private class Services
         {
-            [JsonProperty("appinvite_service")]
-            public AppinviteService AppinviteService { get; set; }
+            [SerializeField]
+            private AppInviteService appinvite_service;
+
+            public AppInviteService AppInviteService => appinvite_service;
         }
 
+        [Serializable]
         private class Client
         {
-            [JsonProperty("client_info")]
-            public ClientInfo ClientInfo { get; set; }
+            [SerializeField]
+            private ClientInfo client_info;
 
-            [JsonProperty("oauth_client")]
-            public List<OauthClient> OauthClient { get; set; }
+            public ClientInfo ClientInfo => client_info;
 
-            [JsonProperty("api_key")]
-            public List<ApiKeyProperty> ApiKey { get; set; }
+            [SerializeField]
+            private List<OauthClient> oauth_client;
 
-            [JsonProperty("services")]
-            public Services Services { get; set; }
+            public List<OauthClient> OauthClient => oauth_client;
+
+            [SerializeField]
+            private List<ApiKeyProperty> api_key;
+
+            public List<ApiKeyProperty> ApiKey => api_key;
+
+            [SerializeField]
+            private Services services;
+
+            public Services Services => services;
         }
 
         #endregion Google Services Data Object

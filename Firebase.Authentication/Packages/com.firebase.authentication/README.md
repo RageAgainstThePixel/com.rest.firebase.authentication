@@ -1,7 +1,6 @@
 # Firebase.Authentication
 
-A [Firebase](https://firebase.google.com/) Authentication package
-for the Unity Engine.
+A [Firebase](https://firebase.google.com/) Authentication package for the [Unity](https://unity.com/) Game Engine.
 
 Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-authentication-dotnet)
 
@@ -11,11 +10,11 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
 
 ### Via Unity Package Manager and OpenUPM
 
-- Open your Unity project settings- Add the OpenUPM package registry:
+- Open your Unity project settings
+- Add the OpenUPM package registry:
   - `Name: OpenUPM`
   - `URL: https://package.openupm.com`
   - `Scope(s):`
-    - `com.openupm`
     - `com.firebase`
 
 ![scoped-registries](Documentation~/images/package-manager-scopes.png)
@@ -63,5 +62,5 @@ firebaseClient.SignOut();
 
 ## Additional Packages
 
-- Firebase.Database (Coming soon!)
 - [Firebase.Storage](https://github.com/StephenHodgson/com.firebase.storage)
+- [Firebase.Realtime-Database](https://github.com/StephenHodgson/com.firebase.realtime-database)

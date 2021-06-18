@@ -1,11 +1,27 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using UnityEngine;
+
 namespace Firebase.Authentication.Requests
 {
+    [Serializable]
     internal class ResetPasswordRequest
     {
-        public string Email { get; set; }
+        public ResetPasswordRequest(string email, string requestType = "PASSWORD_RESET")
+        {
+            this.email = email;
+            this.requestType = requestType;
+        }
 
-        public string RequestType { get; set; } = "PASSWORD_RESET";
+        [SerializeField]
+        private string email;
+
+        public string Email => email;
+
+        [SerializeField]
+        private string requestType;
+
+        public string RequestType => requestType;
     }
 }

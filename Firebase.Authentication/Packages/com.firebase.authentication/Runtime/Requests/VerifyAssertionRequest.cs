@@ -1,19 +1,53 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+using UnityEngine;
+
 namespace Firebase.Authentication.Requests
 {
+    [Serializable]
     internal class VerifyAssertionRequest : IdTokenRequest
     {
-        public string RequestUri { get; set; }
+        /// <inheritdoc />
+        public VerifyAssertionRequest(string idToken, string requestUri, string postBody, string pendingToken, string sessionId = null, bool returnIdpCredential = true, bool returnSecureToken = true)
+            : base(idToken)
+        {
+            this.requestUri = requestUri;
+            this.postBody = postBody;
+            this.pendingToken = pendingToken;
+            this.sessionId = sessionId;
+            this.returnIdpCredential = returnIdpCredential;
+            this.returnSecureToken = returnSecureToken;
+        }
 
-        public string PostBody { get; set; }
+        [SerializeField]
+        private string requestUri;
 
-        public string PendingToken { get; set; }
+        public string RequestUri => requestUri;
 
-        public string SessionId { get; set; }
+        [SerializeField]
+        private string postBody;
 
-        public bool ReturnIdpCredential { get; set; }
+        public string PostBody => postBody;
 
-        public bool ReturnSecureToken { get; set; }
+        [SerializeField]
+        private string pendingToken;
+
+        public string PendingToken => pendingToken;
+
+        [SerializeField]
+        private string sessionId;
+
+        public string SessionId => sessionId;
+
+        [SerializeField]
+        private bool returnIdpCredential;
+
+        public bool ReturnIdpCredential => returnIdpCredential;
+
+        [SerializeField]
+        private bool returnSecureToken;
+
+        public bool ReturnSecureToken => returnSecureToken;
     }
 }

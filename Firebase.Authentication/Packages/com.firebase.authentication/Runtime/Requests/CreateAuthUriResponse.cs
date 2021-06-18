@@ -1,24 +1,53 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Firebase.Authentication.Requests
 {
+    [Serializable]
     internal class CreateAuthUriResponse
     {
-        public string AuthUri { get; set; }
+        [SerializeField]
+        private string authUri;
 
-        [JsonConverter(typeof(StringEnumConverter))]
-        public FirebaseProviderType ProviderId { get; set; }
+        public string AuthUri => authUri;
 
-        public string SessionId { get; set; }
+        [SerializeField]
+        private string providerId;
 
-        public bool Registered { get; set; }
+        public FirebaseProviderType ProviderId
+        {
+            get
+            {
+                if (Enum.TryParse<FirebaseProviderType>(providerId, true, out var result))
+                {
+                    return result;
+                }
 
-        public List<FirebaseProviderType> SigninMethods { get; set; }
+                throw new Exception($"Failed to parse {providerId} to {nameof(FirebaseProviderType)}");
+            }
+        }
 
-        public List<FirebaseProviderType> AllProviders { get; set; }
+        [SerializeField]
+        private string sessionId;
+
+        public string SessionId => sessionId;
+
+        [SerializeField]
+        private bool registered;
+
+        public bool Registered => registered;
+
+        [SerializeField]
+        private List<FirebaseProviderType> signinMethods;
+
+        public List<FirebaseProviderType> SigninMethods => signinMethods;
+
+        [SerializeField]
+        private List<FirebaseProviderType> allProviders;
+
+        public List<FirebaseProviderType> AllProviders => allProviders;
     }
 }
