@@ -97,7 +97,7 @@ namespace Firebase.Authentication.Providers
                 parameters[LocaleParameterName] = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
             }
 
-            var response = await SendAuthRequest(new CreateAuthUriRequest(ProviderType, Configuration.RedirectUri, parameters, scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null, null)).ConfigureAwait(false);
+            var response = await SendAuthRequest(new CreateOAuthUriRequest(ProviderType, Configuration.RedirectUri, parameters, scopes.Any() ? $"{{ \"{ProviderType.ToEnumMemberString()}\": \"{string.Join(",", scopes)}\" }}" : null, null)).ConfigureAwait(false);
 
             return new OAuthContinuation(Configuration, response.AuthUri, response.SessionId, ProviderType);
         }
