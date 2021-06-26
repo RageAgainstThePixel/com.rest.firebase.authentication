@@ -46,9 +46,9 @@ namespace Firebase.Authentication
                 }
 
                 var auth = (LoadFromAsset() ??
-                            LoadFromEnv() ??
                             LoadFromDirectory()) ??
-                            LoadFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+                            LoadFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)) ??
+                            LoadFromEnv();
                 cachedDefault = auth;
                 return auth;
             }
@@ -63,7 +63,7 @@ namespace Firebase.Authentication
 
         private static FirebaseAuthentication LoadFromAsset()
             => (from asset in Object.FindObjectsOfType<FirebaseConfigurationSettings>()
-                where !string.IsNullOrWhiteSpace(asset.ApiKey) && !string.IsNullOrWhiteSpace(asset.AuthDomain) && !string.IsNullOrWhiteSpace(asset.ProjectId)
+                where !string.IsNullOrWhiteSpace(asset.ProjectId) && !string.IsNullOrWhiteSpace(asset.ApiKey)
                 select new FirebaseAuthentication(asset.ProjectId, asset.ApiKey, asset.AuthDomain)).FirstOrDefault();
 
         private static FirebaseAuthentication LoadFromEnv()
@@ -107,7 +107,7 @@ namespace Firebase.Authentication
                 }
             }
 
-            return !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(projectId)
+            return !string.IsNullOrWhiteSpace(projectId) && !string.IsNullOrWhiteSpace(key)
                 ? new FirebaseAuthentication(projectId, key)
                 : null;
         }
