@@ -7,30 +7,23 @@ using UnityEngine;
 namespace Firebase.Authentication.Requests
 {
     [Serializable]
-    internal class CreateAuthUriRequest
+    internal class CreateOAuthUriRequest : CreateAuthUriRequest
     {
-        public CreateAuthUriRequest(FirebaseProviderType? providerId, string continueUri, Dictionary<string, string> customParameters, string oauthScope, string identifier)
+        public CreateOAuthUriRequest(FirebaseProviderType? providerId, string continueUri, Dictionary<string, string> customParameters, string oauthScope, string identifier) : base(identifier, continueUri)
         {
             if (providerId.HasValue)
             {
                 this.providerId = providerId.Value.ToString();
             }
 
-            this.continueUri = continueUri;
             this.customParameter = customParameters;
             this.oauthScope = oauthScope;
-            this.identifier = identifier;
         }
 
         [SerializeField]
         private string providerId;
 
         public string ProviderId => providerId;
-
-        [SerializeField]
-        private string continueUri;
-
-        public string ContinueUri => continueUri;
 
         private Dictionary<string, string> customParameter;
 
@@ -40,10 +33,5 @@ namespace Firebase.Authentication.Requests
         private string oauthScope;
 
         public string OauthScope => oauthScope;
-
-        [SerializeField]
-        private string identifier;
-
-        public string Identifier => identifier;
     }
 }

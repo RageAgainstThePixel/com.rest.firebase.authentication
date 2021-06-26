@@ -9,6 +9,6 @@ namespace Firebase.Authentication.Requests
         {
         }
 
-        protected override string UrlFormat => Endpoints.GoogleSetAccountUrl;
+        protected override string UrlFormat => Endpoints.GoogleAccountsUpdateUrl;
     }
 }

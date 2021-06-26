@@ -10,7 +10,7 @@ namespace Firebase.Authentication.Providers
     /// </summary>
     public abstract class FirebaseAuthProvider
     {
-        private CreateAuthUri createAuthUri;
+        private AccountInfoUri accountInfoUri;
         internal FirebaseConfiguration Configuration;
 
         /// <summary>
@@ -21,14 +21,14 @@ namespace Firebase.Authentication.Providers
         internal virtual void Initialize(FirebaseConfiguration configuration)
         {
             Configuration = configuration;
-            createAuthUri = new CreateAuthUri(configuration);
+            accountInfoUri = new AccountInfoUri(configuration);
         }
 
         protected internal abstract Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential);
 
         protected internal abstract Task<FirebaseUser> LinkWithCredentialAsync(string idToken, AuthCredential credential);
 
-        internal async Task<CreateAuthUriResponse> SendAuthRequest(CreateAuthUriRequest request)
-            => await createAuthUri.ExecuteAsync(request);
+        internal async Task<CreateAuthUriResponse> SendAuthRequest(CreateOAuthUriRequest request)
+            => await accountInfoUri.ExecuteAsync(request);
     }
 }
