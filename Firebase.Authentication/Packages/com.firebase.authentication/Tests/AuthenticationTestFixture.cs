@@ -6,13 +6,21 @@ namespace Firebase.Authentication.Tests
 {
     internal class AuthenticationTestFixture
     {
+        private readonly string email = "test@email.com";
+
+        private readonly string password = "tempP@ssw0rd";
+
         [Test]
         public void Test_1_CreateUser()
         {
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
 
-            var user = firebaseClient.CreateUserWithEmailAndPasswordAsync("test@email.com", "tempP@ssw0rd", "test user").Result;
+            var result = firebaseClient.FetchSignInMethodsForEmailAsync(email).Result;
+
+            Assert.IsFalse(result.UserExists);
+
+            var user = firebaseClient.CreateUserWithEmailAndPasswordAsync(email, password, "test user").Result;
 
             Assert.NotNull(user);
             Assert.NotNull(firebaseClient.User);
@@ -30,7 +38,7 @@ namespace Firebase.Authentication.Tests
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
 
-            var user = firebaseClient.SignInWithEmailAndPasswordAsync("test@email.com", "tempP@ssw0rd").Result;
+            var user = firebaseClient.SignInWithEmailAndPasswordAsync(email, password).Result;
             var token = user.GetIdTokenAsync().Result;
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(token));
@@ -46,7 +54,7 @@ namespace Firebase.Authentication.Tests
         {
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
-            var user = firebaseClient.SignInWithEmailAndPasswordAsync("test@email.com", "tempP@ssw0rd").Result;
+            var user = firebaseClient.SignInWithEmailAndPasswordAsync(email, password).Result;
 
             Assert.NotNull(user);
             Assert.NotNull(firebaseClient.User);

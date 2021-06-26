@@ -19,24 +19,24 @@ namespace Firebase.Authentication.Requests
         public string Email => email;
 
         [SerializeField]
-        private string displayName;
-
-        public string DisplayName => displayName;
-
-        [SerializeField]
-        private string photoUrl;
-
-        public string PhotoUrl => photoUrl;
-
-        [SerializeField]
         private bool emailVerified;
 
         public bool EmailVerified => emailVerified;
 
         [SerializeField]
+        private string displayName;
+
+        public string DisplayName => displayName;
+
+        [SerializeField]
         private ProviderUserInfo[] providerUserInfo;
 
         public ProviderUserInfo[] ProviderUserInfo => providerUserInfo;
+
+        [SerializeField]
+        private string photoUrl;
+
+        public string PhotoUrl => photoUrl;
 
         [SerializeField]
         private long validSince;
@@ -57,5 +57,10 @@ namespace Firebase.Authentication.Requests
         private string lastRefreshAt;
 
         public string LastRefreshAt => lastRefreshAt;
+
+        [SerializeField]
+        private bool customAuth;
+
+        public bool CustomAuth => customAuth;
     }
 }

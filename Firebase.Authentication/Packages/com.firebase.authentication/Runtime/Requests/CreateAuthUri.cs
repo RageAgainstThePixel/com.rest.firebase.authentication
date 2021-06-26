@@ -2,13 +2,13 @@
 
 namespace Firebase.Authentication.Requests
 {
-    internal class CreateAuthUri : FirebaseRequestBase<CreateAuthUriRequest, CreateAuthUriResponse>
+    internal class AccountInfoUri : FirebaseRequestBase<CreateAuthUriRequest, CreateAuthUriResponse>
     {
-        public CreateAuthUri(FirebaseConfiguration configuration)
+        public AccountInfoUri(FirebaseConfiguration configuration)
             : base(configuration)
         {
         }
 
-        protected override string UrlFormat => Endpoints.GoogleCreateAuthUrl;
+        protected override string UrlFormat => Endpoints.GoogleAccountsCreateAuthUrl;
     }
 }
