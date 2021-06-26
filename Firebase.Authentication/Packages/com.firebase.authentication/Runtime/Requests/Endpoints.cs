@@ -10,12 +10,11 @@ namespace Firebase.Authentication.Requests
         public const string GoogleAccountsUpdateUrl      = "https://identitytoolkit.googleapis.com/v1/accounts:update?key={0}";
         public const string GoogleAccountsCreateAuthUrl  = "https://identitytoolkit.googleapis.com/v1/accounts:createAuthUri?key={0}";
         public const string GooglePasswordUrl            = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={0}";
+        public const string GoogleGetUserUrl             = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={0}";
+        public const string GoogleIdentityUrl            = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key={0}";
+        public const string GoogleDeleteUserUrl          = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key={0}";
+        public const string GoogleGetConfirmationCodeUrl = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={0}";
 
-        public const string GoogleGetUser                = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key={0}";
-        public const string GoogleIdentityUrl            = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyAssertion?key={0}";
-        public const string GoogleDeleteUserUrl          = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/deleteAccount?key={0}";
-        public const string GoogleGetConfirmationCodeUrl = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key={0}";
-        public const string GoogleSetAccountUrl          = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}";
         public const string GoogleProjectConfigUrl       = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key={0}";
     }
 }
