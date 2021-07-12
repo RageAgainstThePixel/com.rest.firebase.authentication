@@ -23,7 +23,7 @@ namespace Firebase.Authentication
 
         public FirebaseAuthenticationClient(FirebaseAuthentication authentication = null, FirebaseAuthProvider[] providers = null, string userCacheDirectory = null)
         {
-            Configuration = new FirebaseConfiguration(authentication, providers, userCacheDirectory);
+            Configuration = new FirebaseConfiguration(this, authentication, providers, userCacheDirectory);
             projectConfiguration = new ProjectConfiguration(Configuration);
             signupNewUser = new SignupNewUser(Configuration);
             accountsUri = new AccountInfoUri(Configuration);

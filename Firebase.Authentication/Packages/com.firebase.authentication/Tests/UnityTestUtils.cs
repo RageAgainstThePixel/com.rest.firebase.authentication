@@ -11,13 +11,9 @@ namespace Firebase.Authentication.Tests
     internal static class UnityTestUtils
     {
         public static T RunAsyncTestsAsSync<T>(Func<Task<T>> asyncFunc)
-        {
-            return Task.Run(async () => await asyncFunc()).Result;
-        }
+            => Task.Run(async () => await asyncFunc()).Result;
 
         public static void RunAsyncTestsAsSync(Func<Task> asyncFunc)
-        {
-            Task.Run(async () => await asyncFunc()).Wait();
-        }
+            => Task.Run(async () => await asyncFunc()).Wait();
     }
 }

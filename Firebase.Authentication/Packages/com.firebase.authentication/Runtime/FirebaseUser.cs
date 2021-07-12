@@ -1,5 +1,6 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Firebase.Authentication.Exceptions;
 using Firebase.Authentication.Providers;
 using Firebase.Authentication.Requests;
 using System;
@@ -15,6 +16,7 @@ namespace Firebase.Authentication
     {
         private const string RefreshToken = "refresh_token";
 
+        private readonly FirebaseAuthenticationClient client;
         private readonly DeleteAccount deleteAccount;
         private readonly RefreshToken token;
         private readonly UpdateAccount updateAccount;
@@ -59,14 +61,22 @@ namespace Firebase.Authentication
         {
             if (forceRefresh || Credential.IsExpired())
             {
-                var refresh = await token.ExecuteAsync(
-                    new RefreshTokenRequest(RefreshToken, Credential.RefreshToken))
-                    .ConfigureAwait(false);
+                try
+                {
+                    var request = new RefreshTokenRequest(RefreshToken, Credential.RefreshToken);
+                    var refresh = await token.ExecuteAsync(request).ConfigureAwait(false);
+                    Credential = new FirebaseCredential(refresh.IdToken, refresh.RefreshToken, refresh.ExpiresIn, Credential.ProviderType);
+                    configuration.UserManager.UpdateExistingUser(this);
+                }
+                catch (FirebaseAuthException)
+                {
+                    if (configuration.Client.IsUserLoggedIn)
+                    {
+                        configuration.Client.SignOut();
+                    }
 
-                Credential = new FirebaseCredential(refresh.IdToken, refresh.RefreshToken, refresh.ExpiresIn,
-                    Credential.ProviderType);
-
-                configuration.UserManager.UpdateExistingUser(this);
+                    throw;
+                }
             }
 
             return Credential.IdToken;

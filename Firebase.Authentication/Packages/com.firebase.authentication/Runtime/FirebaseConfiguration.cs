@@ -10,8 +10,9 @@ namespace Firebase.Authentication
 {
     internal class FirebaseConfiguration
     {
-        public FirebaseConfiguration(FirebaseAuthentication authentication = null, FirebaseAuthProvider[] authProviders = null, string userCacheDirectory = null)
+        public FirebaseConfiguration(FirebaseAuthenticationClient client, FirebaseAuthentication authentication = null, FirebaseAuthProvider[] authProviders = null, string userCacheDirectory = null)
         {
+            Client = client;
             this.authentication = authentication ?? FirebaseAuthentication.Default;
 
             if (authProviders == null || authProviders.Length == 0)
@@ -55,5 +56,7 @@ namespace Firebase.Authentication
         internal FirebaseAuthProvider GetAuthProvider(FirebaseProviderType providerType)
             => AuthProviders.FirstOrDefault(authProvider => authProvider.ProviderType == providerType) ??
                throw new InvalidOperationException($"{nameof(FirebaseProviderType)}.{providerType} is not configured.");
+
+        internal FirebaseAuthenticationClient Client { get; }
     }
 }
