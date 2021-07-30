@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Firebase.Authentication
 {
@@ -31,7 +31,12 @@ namespace Firebase.Authentication
 
             ProjectId = projectId;
             ApiKey = apiKey;
-            AuthDomain = authDomain ?? $"{projectId}.firebaseapp.com";
+            AuthDomain = authDomain;
+
+            if (string.IsNullOrWhiteSpace(AuthDomain))
+            {
+                AuthDomain = $"{projectId}.firebaseapp.com";
+            }
         }
 
         private static FirebaseAuthentication cachedDefault = null;
@@ -45,12 +50,13 @@ namespace Firebase.Authentication
                     return cachedDefault;
                 }
 
-                var auth = (LoadFromAsset() ??
-                            LoadFromDirectory()) ??
-                            LoadFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)) ??
-                            LoadFromEnv();
-                cachedDefault = auth;
-                return auth;
+                var authentication = (LoadFromAsset() ??
+                                      LoadFromDirectory()) ??
+                                      LoadFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)) ??
+                                      LoadFromEnv();
+
+                cachedDefault = authentication ?? throw new AuthenticationException("Failed to load the default authentication credentials!");
+                return authentication;
             }
             set => cachedDefault = value;
         }
@@ -62,9 +68,10 @@ namespace Firebase.Authentication
         public string AuthDomain { get; }
 
         private static FirebaseAuthentication LoadFromAsset()
-            => (from asset in Object.FindObjectsOfType<FirebaseConfigurationSettings>()
-                where !string.IsNullOrWhiteSpace(asset.ProjectId) && !string.IsNullOrWhiteSpace(asset.ApiKey)
-                select new FirebaseAuthentication(asset.ProjectId, asset.ApiKey, asset.AuthDomain)).FirstOrDefault();
+            => (Resources.LoadAll<FirebaseConfigurationSettings>(string.Empty)
+                .Where(asset => asset != null)
+                .Where(asset => !string.IsNullOrWhiteSpace(asset.ProjectId) && !string.IsNullOrWhiteSpace(asset.ApiKey))
+                .Select(asset => new FirebaseAuthentication(asset.ProjectId, asset.ApiKey, asset.AuthDomain))).FirstOrDefault();
 
         private static FirebaseAuthentication LoadFromEnv()
         {
