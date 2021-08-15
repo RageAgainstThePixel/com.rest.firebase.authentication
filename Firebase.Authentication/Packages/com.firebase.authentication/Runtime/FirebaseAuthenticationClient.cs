@@ -192,8 +192,8 @@ namespace Firebase.Authentication
         public void SignOut()
         {
             var uid = User?.Uid;
-            User = null;
             Configuration.UserManager.DeleteExistingUser(uid);
+            TriggerAuthStateChanged(null);
         }
 
         private void TriggerAuthStateChanged(FirebaseUser newUser)
