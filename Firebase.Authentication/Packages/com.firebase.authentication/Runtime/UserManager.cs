@@ -49,7 +49,7 @@ namespace Firebase.Authentication
 
         public void UpdateExistingUser(FirebaseUser user)
         {
-            if (user.Uid != cache?.Info.Uid)
+            if (cache?.Info.Uid != user.Uid)
             {
                 SaveNewUser(user);
             }
@@ -57,15 +57,11 @@ namespace Firebase.Authentication
 
         public void DeleteExistingUser(string uid)
         {
-            if (cache?.Info.Uid != uid)
+            if (cache?.Info.Uid == uid)
             {
-                // deleting a user which is not an active user
-                return;
+                cache = null;
+                userRepository.DeleteUser();
             }
-
-            cache = null;
-
-            userRepository.DeleteUser();
 
             UserChanged?.Invoke(null);
         }
