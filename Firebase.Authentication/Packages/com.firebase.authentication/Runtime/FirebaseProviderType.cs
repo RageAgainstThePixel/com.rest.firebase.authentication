@@ -32,7 +32,7 @@ namespace Firebase.Authentication
         [EnumMember(Value = "password")]
         EmailAndPassword,
 
-        [EnumMember(Value = "custom_token")]
+        [EnumMember(Value = "custom")]
         CustomToken,
     }
 }
