@@ -30,6 +30,9 @@ namespace Firebase.Authentication
         Apple,
 
         [EnumMember(Value = "password")]
-        EmailAndPassword
+        EmailAndPassword,
+
+        [EnumMember(Value = "custom_token")]
+        CustomToken,
     }
 }

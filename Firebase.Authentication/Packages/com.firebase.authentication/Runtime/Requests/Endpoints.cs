@@ -14,7 +14,9 @@ namespace Firebase.Authentication.Requests
         public const string GoogleIdentityUrl            = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithIdp?key={0}";
         public const string GoogleDeleteUserUrl          = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key={0}";
         public const string GoogleGetConfirmationCodeUrl = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={0}";
+        public const string GoogleSignInWithCustomToken  = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key={0}";
 
-        public const string GoogleProjectConfigUrl       = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key={0}";
+        public const string GoogleProjectConfigUrl         = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getProjectConfig?key={0}";
+        public const string GoogleProjectVerifyPhoneNumber = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPhoneNumber?key={0}";
     }
 }
