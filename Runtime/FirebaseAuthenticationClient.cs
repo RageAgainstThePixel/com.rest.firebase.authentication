@@ -156,7 +156,6 @@ namespace Firebase.Authentication
         public async Task<FirebaseUser> SignInWithEmailAndPasswordAsync(string email, string password)
         {
             await CheckAuthDomain().ConfigureAwait(false);
-
             var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignInUserAsync(email, password).ConfigureAwait(false);
             SaveToken(result);
@@ -184,6 +183,20 @@ namespace Firebase.Authentication
 
             var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             await provider.ResetEmailPasswordAsync(email).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Signs in using a custom token.
+        /// </summary>
+        /// <param name="customToken"></param>
+        /// <returns></returns>
+        public async Task<FirebaseUser> SignInWithCustomTokenAsync(string customToken)
+        {
+            await CheckAuthDomain().ConfigureAwait(false);
+            var provider = (CustomTokenProvider)Configuration.GetAuthProvider(FirebaseProviderType.CustomToken);
+            var result = await provider.SignInWithCustomTokenAsync(customToken).ConfigureAwait(false);
+            SaveToken(result);
+            return result;
         }
 
         /// <summary>

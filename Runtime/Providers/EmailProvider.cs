@@ -26,7 +26,7 @@ namespace Firebase.Authentication.Providers
             getAccountInfo = new GetAccountInfo(Configuration);
             verifyPassword = new VerifyPassword(Configuration);
             resetPassword = new ResetPassword(Configuration);
-            linkAccount = new SetAccountLink(configuration);
+            linkAccount = new SetAccountLink(Configuration);
         }
 
         private static AuthCredential GetCredential(string email, string password)
@@ -77,7 +77,7 @@ namespace Firebase.Authentication.Providers
         {
             var emailCredential = (EmailCredential)credential;
 
-            VerifyPasswordResponse response = await verifyPassword.ExecuteAsync(new VerifyPasswordRequest(emailCredential.Email, emailCredential.Password, true)).ConfigureAwait(false);
+            var response = await verifyPassword.ExecuteAsync(new VerifyPasswordRequest(emailCredential.Email, emailCredential.Password, true)).ConfigureAwait(false);
 
             return new FirebaseUser(
                 Configuration,

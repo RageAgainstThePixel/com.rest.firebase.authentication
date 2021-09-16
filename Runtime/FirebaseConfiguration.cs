@@ -20,6 +20,7 @@ namespace Firebase.Authentication
                 authProviders = new FirebaseAuthProvider[]
                 {
                     new EmailProvider(),
+                    new CustomTokenProvider(),
                     new AppleProvider(),
                     new FacebookProvider(),
                     new GithubProvider(),
