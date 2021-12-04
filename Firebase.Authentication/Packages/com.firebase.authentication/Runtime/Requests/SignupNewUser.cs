@@ -2,7 +2,7 @@
 
 namespace Firebase.Authentication.Requests
 {
-    internal class SignupNewUser : FirebaseRequestBase<SignupNewUserRequest, SignupNewUserResponse>
+    internal class SignupNewUser : FirebaseRequestBase<SecureTokenRequest, SignupNewUserResponse>
     {
         public SignupNewUser(FirebaseConfiguration configuration)
             : base(configuration)

@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Firebase.Authentication.Requests
 {
     [Serializable]
-    internal class SignupNewUserRequest
+    internal class SignupNewUserRequest : SecureTokenRequest
     {
         public SignupNewUserRequest(string email, string password, bool returnSecureToken)
+            : base(returnSecureToken)
         {
             this.email = email;
             this.password = password;
-            this.returnSecureToken = returnSecureToken;
         }
 
         [SerializeField]
@@ -24,10 +24,5 @@ namespace Firebase.Authentication.Requests
         private string password;
 
         public string Password => password;
-
-        [SerializeField]
-        private bool returnSecureToken;
-
-        public bool ReturnSecureToken => returnSecureToken;
     }
 }

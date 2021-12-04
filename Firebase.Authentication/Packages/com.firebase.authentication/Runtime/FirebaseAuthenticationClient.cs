@@ -131,7 +131,7 @@ namespace Firebase.Authentication
         /// </summary>
         public async Task<FirebaseUser> SignInAnonymouslyAsync()
         {
-            var response = await signupNewUser.ExecuteAsync(new SignupNewUserRequest(null, null, true)).ConfigureAwait(false);
+            var response = await signupNewUser.ExecuteAsync(new SecureTokenRequest(true)).ConfigureAwait(false);
             var credential = new FirebaseCredential(response.IdToken, response.RefreshToken, response.ExpiresIn, FirebaseProviderType.Anonymous);
             var info = new UserInfo(response);
             var user = new FirebaseUser(Configuration, info, credential);
