@@ -17,6 +17,7 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
   - `URL: https://package.openupm.com`
   - `Scope(s):`
     - `com.firebase`
+    - `com.utilities`
 
 ![scoped-registries](Firebase.Authentication/Packages/com.firebase.authentication/Documentation~/images/package-manager-scopes.png)
 
