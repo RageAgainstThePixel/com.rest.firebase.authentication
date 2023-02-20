@@ -1,0 +1,17 @@
+{
+    "name": "Firebase.Authentication.Editor",
+    "references": [
+        "GUID:77dedea14cd0e914d982cd9a218098eb"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
