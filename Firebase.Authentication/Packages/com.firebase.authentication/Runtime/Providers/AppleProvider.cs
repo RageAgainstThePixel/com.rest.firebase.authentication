@@ -6,8 +6,8 @@ namespace Firebase.Authentication.Providers
 {
     public class AppleProvider : OAuthProvider
     {
-        public static AuthCredential GetCredential(string accessToken)
-            => GetCredential(FirebaseProviderType.Apple, accessToken, OAuthCredentialTokenType.AccessToken);
+        public static AuthCredential GetCredential(string accessToken, OAuthCredentialTokenType tokenType = OAuthCredentialTokenType.AccessToken)
+            => GetCredential(FirebaseProviderType.Apple, accessToken, tokenType);
 
         public override FirebaseProviderType ProviderType => FirebaseProviderType.Apple;
 

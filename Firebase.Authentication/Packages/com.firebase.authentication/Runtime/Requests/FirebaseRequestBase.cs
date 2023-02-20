@@ -28,7 +28,6 @@ namespace Firebase.Authentication.Requests
         {
             var responseData = string.Empty;
             var requestData = request != null ? JsonUtility.ToJson(request) : null;
-            //Debug.Log(requestData);
             var url = GetFormattedUrl(Configuration.ApiKey);
 
             try
@@ -41,7 +40,6 @@ namespace Firebase.Authentication.Requests
 
                 var httpResponse = await Configuration.HttpClient.SendAsync(message).ConfigureAwait(false);
                 responseData = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-                //Debug.Log(responseData);
                 var response = JsonUtility.FromJson<TResponse>(responseData);
                 httpResponse.EnsureSuccessStatusCode();
                 return response;

@@ -3,9 +3,11 @@
 [![Discord](https://img.shields.io/discord/855294214065487932.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xQgMW9ufN4)
 [![openupm](https://img.shields.io/npm/v/com.firebase.authentication?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.firebase.authentication/)
 
-A [Firebase](https://firebase.google.com/) Authentication package for the [Unity](https://unity.com/) Game Engine.
+A non-official [Firebase](https://firebase.google.com/) authentication RESTful client for the [Unity](https://unity.com/) Game Engine.
 
 Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-authentication-dotnet)
+
+***All copyrights, trademarks, logos, and assets are the property of their respective owners.***
 
 ## Installing
 
@@ -29,11 +31,13 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
 - Open your Unity Package Manager
 - Add package from git url: `https://github.com/RageAgainstThePixel/com.firebase.authentication.git#upm`
 
-## Getting Started
+---
+
+## Documentation
 
 ### Project Setup
 
-By default the FirebaseAuthenticationClient will attempt to load the `FirebaseConfigurationSettings.asset` scriptable object asset if one exists.
+By default the `FirebaseAuthenticationClient` will attempt to load the `FirebaseConfigurationSettings.asset` scriptable object asset if one exists.
 
 If no `FirebaseConfigurationSettings.asset` can be found then the client will attempt to load te `google-services.json` file in the local project folder.
 
