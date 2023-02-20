@@ -10,7 +10,7 @@ namespace Firebase
 {
     internal static class PackageCheck
     {
-        internal const string OldPackageScope = "com.rest.firebase";
+        internal const string OldPackageScope = "com.firebase";
         internal const string NewPackageScope = "com.rest.firebase";
 
         private static bool? canUpgrade;
@@ -42,7 +42,7 @@ namespace Firebase
                     {
                         if (!canUpgrade.HasValue && EditorUtility.DisplayDialog("Attention!",
                                 "This Firebase package scope has changed!\n\n" +
-                                "com.rest.firebase.* -> com.rest.firebase.*\n\n" +
+                                "com.firebase.* -> com.rest.firebase.*\n\n" +
                                 "Would you like to automatically update your package to the new scope?\n\n" +
                                 "This will not change the version you're currently on.",
                                 "Ok", "Later"))
