@@ -1,16 +1,16 @@
 {
-  "name": "com.firebase.authentication",
+  "name": "com.rest.firebase.authentication",
   "displayName": "Firebase.Authentication",
   "description": "A non-official Firebase authentication RESTful client.",
   "keywords": [],
-  "version": "2.0.0-preview.1",
+  "version": "2.0.0",
   "unity": "2021.3",
-  "documentationUrl": "https://github.com/RageAgainstThePixel/com.firebase.authentication#documentation",
-  "changelogUrl": "https://github.com/RageAgainstThePixel/com.firebase.authentication/releases",
+  "documentationUrl": "https://github.com/RageAgainstThePixel/com.rest.firebase.authentication#documentation",
+  "changelogUrl": "https://github.com/RageAgainstThePixel/com.rest.firebase.authentication/releases",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "repository": "https://github.com/RageAgainstThePixel/com.firebase.authentication.git"
+    "repository": "https://github.com/RageAgainstThePixel/com.rest.firebase.authentication.git"
   },
   "author": {
     "name": "Stephen Hodgson",

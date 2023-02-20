@@ -13,5 +13,5 @@ jobs:
         fetch-depth: 0
     - name: upm subtree split
       run: |
-        git subtree split --prefix="Firebase.Authentication/Packages/com.firebase.authentication" -b upm
+        git subtree split --prefix="Firebase.Authentication/Packages/com.rest.firebase.authentication" -b upm
         git push -u origin upm

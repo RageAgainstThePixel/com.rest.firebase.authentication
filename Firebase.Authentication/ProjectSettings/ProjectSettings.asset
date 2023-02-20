@@ -134,7 +134,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.0.0
+  bundleVersion: 2.0.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -154,9 +154,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.firebase.authentication
-    Lumin: com.firebase.authentication
-    Standalone: com.firebase.authentication
+    Android: com.rest.firebase.authentication
+    Lumin: com.rest.firebase.authentication
+    Standalone: com.rest.firebase.authentication
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -655,7 +655,7 @@ PlayerSettings:
     Windows Store Apps: 6
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: com.firebase.authentication
+  metroPackageName: com.rest.firebase.authentication
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
