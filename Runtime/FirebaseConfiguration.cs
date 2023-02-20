@@ -33,8 +33,8 @@ namespace Firebase.Authentication
             AuthProviders = authProviders;
             HttpClient = new HttpClient();
             UserManager = new UserManager(string.IsNullOrWhiteSpace(userCacheDirectory)
-                ? (IUserRepository)new InMemoryRepository()
-                : (IUserRepository)new FileUserRepository(this, userCacheDirectory));
+                ? new InMemoryRepository()
+                : new FileUserRepository(this, userCacheDirectory));
             RedirectUri = $"https://{AuthDomain}/__/auth/handler";
         }
 
