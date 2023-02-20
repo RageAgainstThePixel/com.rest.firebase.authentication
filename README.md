@@ -1,7 +1,7 @@
 # Firebase.Authentication
 
 [![Discord](https://img.shields.io/discord/855294214065487932.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xQgMW9ufN4)
-[![openupm](https://img.shields.io/npm/v/com.firebase.authentication?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.firebase.authentication/)
+[![openupm](https://img.shields.io/npm/v/com.rest.firebase.authentication?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.rest.firebase.authentication/)
 
 A non-official [Firebase](https://firebase.google.com/) authentication RESTful client for the [Unity](https://unity.com/) Game Engine.
 
@@ -18,9 +18,9 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
   - `Name: OpenUPM`
   - `URL: https://package.openupm.com`
   - `Scope(s):`
-    - `com.firebase`
+    - `com.rest.firebase`
 
-![scoped-registries](Firebase.Authentication/Packages/com.firebase.authentication/Documentation~/images/package-manager-scopes.png)
+![scoped-registries](Firebase.Authentication/Packages/com.rest.firebase.authentication/Documentation~/images/package-manager-scopes.png)
 
 - Open the Unity Package Manager window
 - Change the Registry from Unity to `My Registries`
@@ -29,7 +29,7 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
 ### Via Unity Package Manager and Git url
 
 - Open your Unity Package Manager
-- Add package from git url: `https://github.com/RageAgainstThePixel/com.firebase.authentication.git#upm`
+- Add package from git url: `https://github.com/RageAgainstThePixel/com.rest.firebase.authentication.git#upm`
 
 ---
 
@@ -67,5 +67,5 @@ firebaseClient.SignOut();
 
 ## Additional Packages
 
-- [Firebase.Storage](https://github.com/RageAgainstThePixel/com.firebase.storage)
-- [Firebase.Realtime-Database](https://github.com/RageAgainstThePixel/com.firebase.realtime-database)
+- [Firebase.Storage](https://github.com/RageAgainstThePixel/com.rest.firebase.storage)
+- [Firebase.Realtime-Database](https://github.com/RageAgainstThePixel/com.rest.firebase.realtime-database)
