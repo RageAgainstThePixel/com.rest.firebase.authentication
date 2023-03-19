@@ -1,11 +1,12 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Firebase.Authentication.CredentialStore;
 using Firebase.Authentication.Exceptions;
 using Firebase.Authentication.Providers;
-using Firebase.Authentication.CredentialStore;
 using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -97,7 +98,7 @@ namespace Firebase.Authentication
                 throw new ArgumentException($"{nameof(oauthProvider)} cannot be null.");
             }
 
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
 
             var continuation = await oauthProvider.SignInAsync().ConfigureAwait(false);
             var redirectUri = await redirectDelegate(continuation.Uri).ConfigureAwait(false);
@@ -121,7 +122,7 @@ namespace Firebase.Authentication
         /// <returns><see cref="FirebaseUser"/></returns>
         public async Task<FirebaseUser> SignInWithCredentialAsync(AuthCredential credential)
         {
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
             var user = await Configuration
                 .GetAuthProvider(credential.ProviderType)
                 .SignInWithCredentialAsync(credential);
@@ -149,7 +150,7 @@ namespace Firebase.Authentication
         /// <returns><see cref="FetchUserProvidersResult"/></returns>
         public async Task<FetchUserProvidersResult> FetchSignInMethodsForEmailAsync(string email)
         {
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
             var request = new CreateAuthUriRequest(email, Configuration.RedirectUri);
             var response = await accountsUri.ExecuteAsync(request).ConfigureAwait(false);
             return new FetchUserProvidersResult(email, response.Registered, response.SigninMethods, response.AllProviders);
@@ -161,7 +162,7 @@ namespace Firebase.Authentication
         /// <returns><see cref="FirebaseUser"/></returns>
         public async Task<FirebaseUser> SignInWithEmailAndPasswordAsync(string email, string password)
         {
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
             var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignInUserAsync(email, password).ConfigureAwait(false);
             await SaveTokenAsync(result).ConfigureAwait(false);
@@ -174,7 +175,7 @@ namespace Firebase.Authentication
         /// <returns><see cref="FirebaseUser"/></returns>
         public async Task<FirebaseUser> CreateUserWithEmailAndPasswordAsync(string email, string password, string displayName = null)
         {
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
             var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             var result = await provider.SignUpUserAsync(email, password, displayName).ConfigureAwait(false);
             await SaveTokenAsync(result).ConfigureAwait(false);
@@ -186,7 +187,7 @@ namespace Firebase.Authentication
         /// </summary>
         public async Task ResetEmailPasswordAsync(string email)
         {
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
             var provider = (EmailProvider)Configuration.GetAuthProvider(FirebaseProviderType.EmailAndPassword);
             await provider.ResetEmailPasswordAsync(email).ConfigureAwait(false);
         }
@@ -198,7 +199,7 @@ namespace Firebase.Authentication
         /// <returns><see cref="FirebaseUser"/></returns>
         public async Task<FirebaseUser> SignInWithCustomTokenAsync(string customToken)
         {
-            await CheckAuthDomain().ConfigureAwait(false);
+            await CheckAuthDomainAsync().ConfigureAwait(false);
             var provider = (CustomTokenProvider)Configuration.GetAuthProvider(FirebaseProviderType.CustomToken);
             var result = await provider.SignInWithCustomTokenAsync(customToken).ConfigureAwait(false);
             await SaveTokenAsync(result).ConfigureAwait(false);
@@ -238,7 +239,7 @@ namespace Firebase.Authentication
         private async Task SaveTokenAsync(FirebaseUser newUser)
             => await Configuration.UserManager.SaveNewUserAsync(newUser).ConfigureAwait(false);
 
-        private async Task CheckAuthDomain()
+        private async Task CheckAuthDomainAsync()
         {
             if (domainChecked) { return; }
 
@@ -260,6 +261,19 @@ namespace Firebase.Authentication
             }
 
             domainChecked = true;
+        }
+
+        internal async Task<AuthenticationHeaderValue> GetAuthenticatedRequestHeadersAsync()
+        {
+            await CheckAuthDomainAsync().ConfigureAwait(false);
+            var token = await User.GetIdTokenAsync().ConfigureAwait(false);
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                throw new FirebaseAuthException($"Failed to get a valid authentication token for {User.Uid}", AuthErrorReason.InvalidAccessToken);
+            }
+
+            return new AuthenticationHeaderValue(nameof(Firebase), token);
         }
     }
 }
