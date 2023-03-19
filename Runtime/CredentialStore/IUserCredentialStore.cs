@@ -1,18 +1,20 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Firebase.Authentication.Repository
+using System.Threading.Tasks;
+
+namespace Firebase.Authentication.CredentialStore
 {
     /// <summary>
     /// Repository abstraction for <see cref="FirebaseUser"/>.
     /// </summary>
-    internal interface IUserRepository
+    public interface IUserCredentialStore
     {
         bool UserExists { get; }
 
         FirebaseUser GetUser { get; }
 
-        void SaveUser(FirebaseUser newUser);
+        Task SaveUserAsync(FirebaseUser newUser);
 
-        void DeleteUser();
+        Task DeleteUserAsync();
     }
 }
