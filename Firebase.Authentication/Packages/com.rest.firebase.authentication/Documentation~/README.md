@@ -3,7 +3,7 @@
 [![Discord](https://img.shields.io/discord/855294214065487932.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xQgMW9ufN4)
 [![openupm](https://img.shields.io/npm/v/com.rest.firebase.authentication?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.rest.firebase.authentication/)
 
-A non-official [Firebase](https://firebase.google.com/) authentication RESTful client for the [Unity](https://unity.com/) Game Engine.
+A non-official [Firebase](https://firebase.google.com/) RESTful Authentication Client for the [Unity](https://unity.com/) Game Engine.
 
 Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-authentication-dotnet)
 
@@ -19,6 +19,7 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
   - `URL: https://package.openupm.com`
   - `Scope(s):`
     - `com.rest.firebase`
+    - `com.utilities`
 
 ![scoped-registries](images/package-manager-scopes.png)
 
@@ -30,6 +31,8 @@ Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-a
 
 - Open your Unity Package Manager
 - Add package from git url: `https://github.com/RageAgainstThePixel/com.rest.firebase.authentication.git#upm`
+  > Note: this repo has dependencies on other repositories! You are responsible for adding these on your own.
+  - [com.utilities.async](https://github.com/RageAgainstThePixel/com.utilities.async)
 
 ---
 
@@ -68,4 +71,5 @@ firebaseClient.SignOut();
 ## Additional Packages
 
 - [Firebase.Storage](https://github.com/RageAgainstThePixel/com.rest.firebase.storage)
+- [Firebase.Firestore](https://github.com/RageAgainstThePixel/com.rest.firebase.firestore)
 - [Firebase.Realtime-Database](https://github.com/RageAgainstThePixel/com.rest.firebase.realtime-database)

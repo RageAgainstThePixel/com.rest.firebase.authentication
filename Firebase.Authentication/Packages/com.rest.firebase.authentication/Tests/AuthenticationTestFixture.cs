@@ -1,66 +1,65 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Firebase.Authentication.Tests
 {
     internal class AuthenticationTestFixture
     {
-        private readonly string email = "test@email.com";
-
-        private readonly string password = "tempP@ssw0rd";
+        private const string email = "test@email.com";
+        private const string password = "tempP@ssw0rd";
 
         [Test]
-        public void Test_1_CreateUser()
+        public async Task Test_1_CreateUser()
         {
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
 
-            var result = firebaseClient.FetchSignInMethodsForEmailAsync(email).Result;
+            var result = await firebaseClient.FetchSignInMethodsForEmailAsync(email);
 
             Assert.IsFalse(result.UserExists);
 
-            var user = firebaseClient.CreateUserWithEmailAndPasswordAsync(email, password, "test user").Result;
+            var user = await firebaseClient.CreateUserWithEmailAndPasswordAsync(email, password, "test user");
 
             Assert.NotNull(user);
             Assert.NotNull(firebaseClient.User);
             Assert.IsTrue(firebaseClient.IsUserLoggedIn);
             Assert.IsTrue(user.Info.Uid == firebaseClient.User.Uid);
 
-            firebaseClient.SignOut();
+            await firebaseClient.SignOutAsync();
 
             Assert.IsFalse(firebaseClient.IsUserLoggedIn);
         }
 
         [Test]
-        public void Test_2_UserFunctions()
+        public async Task Test_2_UserFunctions()
         {
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
 
-            var user = firebaseClient.SignInWithEmailAndPasswordAsync(email, password).Result;
-            var token = user.GetIdTokenAsync().Result;
+            var user = await firebaseClient.SignInWithEmailAndPasswordAsync(email, password);
+            var token = await user.GetIdTokenAsync();
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(token));
 
-            user.ChangeDisplayNameAsync("new name").Wait();
-
-            firebaseClient.SignOut();
+            await user.ChangeDisplayNameAsync("new name");
+            await firebaseClient.SignOutAsync();
             Assert.IsFalse(firebaseClient.IsUserLoggedIn);
         }
 
         [Test]
-        public void Test_3_DeleteUser()
+        public async Task Test_3_DeleteUser()
         {
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
-            var user = firebaseClient.SignInWithEmailAndPasswordAsync(email, password).Result;
+            var user = await firebaseClient.SignInWithEmailAndPasswordAsync(email, password);
 
             Assert.NotNull(user);
             Assert.NotNull(firebaseClient.User);
             Assert.IsTrue(user.Info.Uid == firebaseClient.User.Uid);
 
-            user.DeleteAsync().Wait();
+            await user.DeleteAsync();
 
             Assert.IsFalse(firebaseClient.IsUserLoggedIn);
         }

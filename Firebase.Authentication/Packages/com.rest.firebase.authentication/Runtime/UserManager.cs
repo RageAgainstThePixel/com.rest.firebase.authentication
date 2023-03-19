@@ -1,13 +1,15 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Repository;
+using Firebase.Authentication.CredentialStore;
 using System;
+using System.Threading.Tasks;
+using Utilities.Async;
 
 namespace Firebase.Authentication
 {
     internal class UserManager
     {
-        private readonly IUserRepository userRepository;
+        private readonly IUserCredentialStore userCredentialStore;
 
         private FirebaseUser cache;
 
@@ -17,9 +19,9 @@ namespace Firebase.Authentication
         /// Creates a new instance of <see cref="UserManager"/> with custom repository.
         /// </summary>
         /// <param name="fileSystem"> Proxy to the filesystem operations. </param>
-        public UserManager(IUserRepository fileSystem)
+        public UserManager(IUserCredentialStore fileSystem)
         {
-            userRepository = fileSystem;
+            userCredentialStore = fileSystem;
         }
 
         public FirebaseUser GetUser
@@ -31,38 +33,42 @@ namespace Firebase.Authentication
                     return cache;
                 }
 
-                if (!userRepository.UserExists)
+                if (!userCredentialStore.UserExists)
                 {
                     return null;
                 }
 
-                return cache = userRepository.GetUser;
+                return cache = userCredentialStore.GetUser;
             }
         }
 
-        public void SaveNewUser(FirebaseUser user)
+        public async Task SaveNewUserAsync(FirebaseUser user)
         {
             cache = user;
-            userRepository.SaveUser(user);
+            await userCredentialStore.SaveUserAsync(user);
+            // Raise events only on main thread.
+            await Awaiters.UnityMainThread;
             UserChanged?.Invoke(user);
         }
 
-        public void UpdateExistingUser(FirebaseUser user)
+        public async Task UpdateExistingUserAsync(FirebaseUser user)
         {
             if (cache?.Info.Uid != user.Uid)
             {
-                SaveNewUser(user);
+                await SaveNewUserAsync(user);
             }
         }
 
-        public void DeleteExistingUser(string uid)
+        public async Task DeleteExistingUserAsync(string uid)
         {
             if (cache?.Info.Uid == uid)
             {
                 cache = null;
-                userRepository.DeleteUser();
+                await userCredentialStore.DeleteUserAsync();
             }
 
+            // Raise events only on main thread.
+            await Awaiters.UnityMainThread;
             UserChanged?.Invoke(null);
         }
     }

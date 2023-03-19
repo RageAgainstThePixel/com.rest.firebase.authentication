@@ -1,7 +1,7 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Firebase.Authentication.Providers;
-using Firebase.Authentication.Repository;
+using Firebase.Authentication.CredentialStore;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -10,12 +10,12 @@ namespace Firebase.Authentication
 {
     internal class FirebaseConfiguration
     {
-        public FirebaseConfiguration(FirebaseAuthenticationClient client, FirebaseAuthentication authentication = null, FirebaseAuthProvider[] authProviders = null, string userCacheDirectory = null)
+        public FirebaseConfiguration(FirebaseAuthenticationClient client, FirebaseAuthentication authentication = null, FirebaseAuthProvider[] authProviders = null, AbstractUserCredentialStore userCredentialStore = null)
         {
             Client = client;
             this.authentication = authentication ?? FirebaseAuthentication.Default;
 
-            if (authProviders == null || authProviders.Length == 0)
+            if (authProviders is not { Length: not 0 })
             {
                 authProviders = new FirebaseAuthProvider[]
                 {
@@ -32,9 +32,9 @@ namespace Firebase.Authentication
 
             AuthProviders = authProviders;
             HttpClient = new HttpClient();
-            UserManager = new UserManager(string.IsNullOrWhiteSpace(userCacheDirectory)
-                ? new InMemoryRepository()
-                : new FileUserRepository(this, userCacheDirectory));
+            userCredentialStore ??= new PlayerPreferencesCredentialStore();
+            userCredentialStore.Configuration = this;
+            UserManager = new UserManager(userCredentialStore);
             RedirectUri = $"https://{AuthDomain}/__/auth/handler";
         }
 
