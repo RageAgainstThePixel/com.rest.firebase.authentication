@@ -3,7 +3,7 @@
 [![Discord](https://img.shields.io/discord/855294214065487932.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xQgMW9ufN4)
 [![openupm](https://img.shields.io/npm/v/com.rest.firebase.authentication?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.rest.firebase.authentication/)
 
-A non-official [Firebase](https://firebase.google.com/) authentication RESTful client for the [Unity](https://unity.com/) Game Engine.
+A non-official [Firebase](https://firebase.google.com/) RESTful Authentication Client for the [Unity](https://unity.com/) Game Engine.
 
 Based on [FirebaseAuthentication.net](https://github.com/step-up-labs/firebase-authentication-dotnet)
 
