@@ -9,5 +9,7 @@ using UnityEngine.Scripting;
 [assembly: InternalsVisibleTo("Firebase.Authentication.Editor")]
 [assembly: InternalsVisibleTo("Firebase.Storage")]
 [assembly: InternalsVisibleTo("Firebase.Storage.Player")]
+[assembly: InternalsVisibleTo("Firebase.Firestore")]
+[assembly: InternalsVisibleTo("Firebase.Firestore.Player")]
 [assembly: InternalsVisibleTo("Firebase.RealtimeDatabase")]
 [assembly: InternalsVisibleTo("Firebase.RealtimeDatabase.Player")]
