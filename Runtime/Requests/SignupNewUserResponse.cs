@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace Firebase.Authentication.Requests
+namespace Firebase.Rest.Authentication.Requests
 {
     [Serializable]
     internal class SignupNewUserResponse

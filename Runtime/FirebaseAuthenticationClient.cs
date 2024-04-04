@@ -1,16 +1,16 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.CredentialStore;
-using Firebase.Authentication.Exceptions;
-using Firebase.Authentication.Providers;
-using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.CredentialStore;
+using Firebase.Rest.Authentication.Exceptions;
+using Firebase.Rest.Authentication.Providers;
+using Firebase.Rest.Authentication.Requests;
 using UnityEngine;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// A Firebase client which encapsulates authenticated communication with Firebase servers.
@@ -148,6 +148,7 @@ namespace Firebase.Authentication
         /// Gets a list of sign-in methods for given email. If there are no methods, it means the user with given email doesn't exist.
         /// </summary>
         /// <returns><see cref="FetchUserProvidersResult"/></returns>
+        [Obsolete("Google has removed this method. See https://cloud.google.com/identity-platform/docs/admin/email-enumeration-protection")]
         public async Task<FetchUserProvidersResult> FetchSignInMethodsForEmailAsync(string email)
         {
             await CheckAuthDomainAsync().ConfigureAwait(false);

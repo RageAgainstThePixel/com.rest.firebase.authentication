@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Firebase.Authentication.Providers
+namespace Firebase.Rest.Authentication.Providers
 {
     public class MicrosoftProvider : OAuthProvider
     {

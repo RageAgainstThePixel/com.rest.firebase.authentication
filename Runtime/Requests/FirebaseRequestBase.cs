@@ -1,13 +1,13 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Exceptions;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.Exceptions;
 using UnityEngine;
 
-namespace Firebase.Authentication.Requests
+namespace Firebase.Rest.Authentication.Requests
 {
     /// <summary>
     /// Base class for issuing http requests against google <see cref="Endpoints"/>.

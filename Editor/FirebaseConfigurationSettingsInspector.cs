@@ -3,7 +3,7 @@
 using System.IO;
 using UnityEditor;
 
-namespace Firebase.Authentication.Editor
+namespace Firebase.Rest.Authentication.Editor
 {
     [CustomEditor(typeof(FirebaseConfigurationSettings))]
     internal class FirebaseConfigurationSettingsInspector : UnityEditor.Editor

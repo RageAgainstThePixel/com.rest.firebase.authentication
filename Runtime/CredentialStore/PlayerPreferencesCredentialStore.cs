@@ -7,7 +7,7 @@ using UnityEngine;
 using Utilities.Async;
 using Utilities.Async.Internal;
 
-namespace Firebase.Authentication.CredentialStore
+namespace Firebase.Rest.Authentication.CredentialStore
 {
     /// <summary>
     /// <see cref="IUserCredentialStore"/> implementation which saves user data in <see cref="PlayerPrefs"/>.

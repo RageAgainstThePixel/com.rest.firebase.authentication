@@ -2,7 +2,7 @@
 
 using System.Runtime.Serialization;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// Type of authentication provider.

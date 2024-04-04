@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Firebase.Authentication.Exceptions
+namespace Firebase.Rest.Authentication.Exceptions
 {
     /// <summary>
     /// Exception thrown during invocation of an HTTP request.
