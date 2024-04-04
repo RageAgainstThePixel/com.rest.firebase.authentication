@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Firebase.Authentication.Exceptions
+namespace Firebase.Rest.Authentication.Exceptions
 {
     /// <summary>
     /// Base class for all FirebaseAuth exceptions.

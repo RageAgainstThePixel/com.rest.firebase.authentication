@@ -1,6 +1,6 @@
 {
-    "name": "Firebase.Authentication.Editor",
-    "rootNamespace": "Firebase.Authentication.Editor",
+    "name": "Firebase.Rest.Authentication.Editor",
+    "rootNamespace": "Firebase.Rest.Authentication.Editor",
     "references": [
         "GUID:77dedea14cd0e914d982cd9a218098eb"
     ],

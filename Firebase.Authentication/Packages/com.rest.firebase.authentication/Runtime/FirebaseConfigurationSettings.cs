@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     [CreateAssetMenu(fileName = nameof(FirebaseConfigurationSettings), menuName = "Firebase/" + nameof(FirebaseConfigurationSettings))]
     internal class FirebaseConfigurationSettings : ScriptableObject

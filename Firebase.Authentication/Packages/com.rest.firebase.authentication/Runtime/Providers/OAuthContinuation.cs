@@ -1,10 +1,10 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Requests;
 using System;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.Requests;
 
-namespace Firebase.Authentication.Providers
+namespace Firebase.Rest.Authentication.Providers
 {
     /// <summary>
     /// Continuation of OAuth sign in. This class processes the redirect uri user is navigated to and signs the user in.

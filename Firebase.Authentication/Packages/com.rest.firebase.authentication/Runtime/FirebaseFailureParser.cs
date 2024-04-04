@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using UnityEngine;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// Parser of HTTP response errors into <see cref="AuthErrorReason"/> enum.

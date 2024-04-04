@@ -7,7 +7,7 @@ using System.Linq;
 using System.Security.Authentication;
 using UnityEngine;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     public class FirebaseAuthentication
     {

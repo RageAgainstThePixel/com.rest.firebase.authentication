@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     public static class FirebaseUserExtensions
     {

@@ -2,7 +2,7 @@
 
 using System.Net.Http;
 
-namespace Firebase.Authentication.Requests
+namespace Firebase.Rest.Authentication.Requests
 {
     internal class ProjectConfiguration : FirebaseRequestBase<object, ProjectConfigResponse>
     {

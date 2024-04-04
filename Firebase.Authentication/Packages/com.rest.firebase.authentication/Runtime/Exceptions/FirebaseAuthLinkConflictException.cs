@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Firebase.Authentication.Exceptions
+namespace Firebase.Rest.Authentication.Exceptions
 {
     /// <summary>
     /// Exception thrown when user tries to login with email that is already associated with a different Auth provider

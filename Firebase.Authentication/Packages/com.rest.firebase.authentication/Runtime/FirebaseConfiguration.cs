@@ -1,12 +1,12 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Providers;
-using Firebase.Authentication.CredentialStore;
 using System;
 using System.Linq;
 using System.Net.Http;
+using Firebase.Rest.Authentication.CredentialStore;
+using Firebase.Rest.Authentication.Providers;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     internal class FirebaseConfiguration
     {

@@ -1,10 +1,10 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Exceptions;
-using Firebase.Authentication.Requests;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.Exceptions;
+using Firebase.Rest.Authentication.Requests;
 
-namespace Firebase.Authentication.Providers
+namespace Firebase.Rest.Authentication.Providers
 {
     public class EmailProvider : FirebaseAuthProvider
     {

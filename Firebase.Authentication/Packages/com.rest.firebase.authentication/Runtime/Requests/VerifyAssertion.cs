@@ -1,9 +1,9 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Exceptions;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.Exceptions;
 
-namespace Firebase.Authentication.Requests
+namespace Firebase.Rest.Authentication.Requests
 {
     internal class VerifyAssertion : FirebaseRequestBase<VerifyAssertionRequest, VerifyAssertionResponse>
     {

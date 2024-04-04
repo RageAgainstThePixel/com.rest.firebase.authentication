@@ -1,11 +1,11 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
+using Firebase.Rest.Authentication.Requests;
 using UnityEngine;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// Basic information about the signed in user.

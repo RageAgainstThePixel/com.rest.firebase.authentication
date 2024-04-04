@@ -1,6 +1,6 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Firebase.Authentication.Exceptions
+namespace Firebase.Rest.Authentication.Exceptions
 {
     public class FirebaseAuthWithCredentialException : FirebaseAuthException
     {

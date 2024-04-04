@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// Delegate which should invoke the passed uri for oauth authentication and return the final redirect uri.

@@ -1,13 +1,13 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.Exceptions;
-using Firebase.Authentication.Providers;
-using Firebase.Authentication.Requests;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.Exceptions;
+using Firebase.Rest.Authentication.Providers;
+using Firebase.Rest.Authentication.Requests;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// Represents a signed-in Firebase user.

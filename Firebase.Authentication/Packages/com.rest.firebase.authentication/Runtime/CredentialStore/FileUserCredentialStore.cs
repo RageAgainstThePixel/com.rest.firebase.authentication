@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Firebase.Authentication.CredentialStore
+namespace Firebase.Rest.Authentication.CredentialStore
 {
     /// <summary>
     /// <see cref="IUserCredentialStore"/> implementation which saves user data in specified folder.

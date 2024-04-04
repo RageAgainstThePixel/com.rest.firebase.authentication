@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace Firebase.Authentication.CredentialStore
+namespace Firebase.Rest.Authentication.CredentialStore
 {
     [Serializable]
     internal class StoredUser
