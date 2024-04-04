@@ -4,7 +4,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     internal static class StringExtensions
     {

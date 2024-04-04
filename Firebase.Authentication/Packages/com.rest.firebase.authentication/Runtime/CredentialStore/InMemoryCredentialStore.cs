@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 
-namespace Firebase.Authentication.CredentialStore
+namespace Firebase.Rest.Authentication.CredentialStore
 {
     /// <summary>
     /// <see cref="IUserCredentialStore"/> implementation which saves user data in memory.

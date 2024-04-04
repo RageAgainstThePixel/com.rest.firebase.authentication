@@ -1,6 +1,6 @@
 {
-    "name": "Firebase.Authentication",
-    "rootNamespace": "Firebase.Authentication",
+    "name": "Firebase.Rest.Authentication",
+    "rootNamespace": "Firebase.Rest.Authentication",
     "references": [
         "GUID:a6609af893242c7438d701ddd4cce46a"
     ],

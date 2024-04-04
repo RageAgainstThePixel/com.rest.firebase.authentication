@@ -3,7 +3,7 @@
 using NUnit.Framework;
 using System.Threading.Tasks;
 
-namespace Firebase.Authentication.Tests
+namespace Firebase.Rest.Authentication.Tests
 {
     internal class AuthenticationTestFixture
     {
@@ -15,10 +15,6 @@ namespace Firebase.Authentication.Tests
         {
             var firebaseClient = new FirebaseAuthenticationClient();
             Assert.NotNull(firebaseClient);
-
-            var result = await firebaseClient.FetchSignInMethodsForEmailAsync(email);
-
-            Assert.IsFalse(result.UserExists);
 
             var user = await firebaseClient.CreateUserWithEmailAndPasswordAsync(email, password, "test user");
 

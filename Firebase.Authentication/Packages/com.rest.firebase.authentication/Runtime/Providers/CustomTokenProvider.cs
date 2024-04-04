@@ -1,9 +1,9 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Threading.Tasks;
-using Firebase.Authentication.Requests;
+using Firebase.Rest.Authentication.Requests;
 
-namespace Firebase.Authentication.Providers
+namespace Firebase.Rest.Authentication.Providers
 {
     public class CustomTokenProvider : FirebaseAuthProvider
     {

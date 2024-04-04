@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 
-namespace Firebase.Authentication.CredentialStore
+namespace Firebase.Rest.Authentication.CredentialStore
 {
     /// <summary>
     /// Repository abstraction for <see cref="FirebaseUser"/>.

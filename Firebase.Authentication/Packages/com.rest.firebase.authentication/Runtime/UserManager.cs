@@ -1,11 +1,11 @@
 ﻿// Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Firebase.Authentication.CredentialStore;
 using System;
 using System.Threading.Tasks;
+using Firebase.Rest.Authentication.CredentialStore;
 using Utilities.Async;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     internal class UserManager
     {

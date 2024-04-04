@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-namespace Firebase.Authentication
+namespace Firebase.Rest.Authentication
 {
     /// <summary>
     /// Firebase credentials used to make Firebase requests.

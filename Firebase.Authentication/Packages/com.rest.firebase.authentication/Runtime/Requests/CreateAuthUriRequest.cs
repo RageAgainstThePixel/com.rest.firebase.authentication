@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Firebase.Authentication.Requests
+namespace Firebase.Rest.Authentication.Requests
 {
     [Serializable]
     internal class CreateOAuthUriRequest : CreateAuthUriRequest
