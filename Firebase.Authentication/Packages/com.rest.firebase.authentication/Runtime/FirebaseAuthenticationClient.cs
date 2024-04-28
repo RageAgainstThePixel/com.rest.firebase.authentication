@@ -36,7 +36,7 @@ namespace Firebase.Rest.Authentication
                 provider.Initialize(Configuration);
             }
 
-            User = Configuration.UserManager.GetUser;
+            loggedInUser = Configuration.UserManager.GetUser;
             Configuration.UserManager.UserChanged += TriggerAuthStateChanged;
         }
 
