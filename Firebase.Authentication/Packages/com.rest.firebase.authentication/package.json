@@ -3,7 +3,7 @@
   "displayName": "Firebase.Rest.Authentication",
   "description": "A non-official Firebase RESTful Authentication Client for Unity (UPM)",
   "keywords": [],
-  "version": "3.0.0",
+  "version": "3.0.1",
   "unity": "2021.3",
   "documentationUrl": "https://github.com/RageAgainstThePixel/com.rest.firebase.authentication#documentation",
   "changelogUrl": "https://github.com/RageAgainstThePixel/com.rest.firebase.authentication/releases",
